@@ -1,0 +1,4 @@
+<?php defined('IN_IA') or exit('Access Denied');?><script language='javascript' src='./source/modules/photowall/template/style/jquery.gcjs.js'></script>
+<script language='javascript' src='./source/modules/photowall/template/style/jquery.form.js'></script>
+<script language='javascript' src='./source/modules/photowall/template/style/tooltipbox.js'></script>
+<link href="./source/modules/photowall/template/style/common.css" rel="stylesheet"/>

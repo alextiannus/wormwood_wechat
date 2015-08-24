@@ -7,7 +7,7 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <meta name="format-detection" content="telephone=no">
 		<meta http-equiv="Cache-Control" content="no-cache"> 
-        <title>微投票</title>
+        <title>Vote</title>
         <link type="text/css" rel="stylesheet" href="./source/modules/vote/style/vote.css" />
         <script type="text/javascript" src="./source/modules/vote/style/js/jquery.js"></script>
         <script type="text/javascript" src="./source/modules/vote/style/js/alert.js"></script>
@@ -103,7 +103,7 @@
                     }
                 });
                 if (ids == '') {
-                    alert('请选择投票选项!');
+                    alert('Please Choose One Singer to Vote!');
                     return;
                 }
                 $.ajax({
@@ -123,7 +123,7 @@
                            alert(data);
                            return;
                        }
-                       alert("投票成功!");
+                       alert("vote sucess!");
                        $(".submit").removeAttr("disabled");
                        setTimeout(function(){
                            location.href="<?php  echo $this->createMobileUrl('result', array('id' => $rid))?>";
@@ -187,7 +187,7 @@
                 <div class="summary"><?php  echo $reply['description'];?></div>
                 <div class="tip-cont">
                     <img class="icon" src="./source/modules/vote/style/images/tip_icon.png">
-                    投票后才能看到结果 | <?php  echo $selects;?> <?php  if(!empty($reply['votetimes'])) { ?><br/> 您还可以投票 <?php  echo $canvotetimes;?> 次<?php  } ?>
+                    After vote,You Can See The Result | <?php  echo $selects;?> <?php  if(!empty($reply['votetimes'])) { ?><br/> You can vote <?php  echo $canvotetimes;?> times<?php  } ?>
                 </div>
 				
 
@@ -208,7 +208,7 @@
 
                 <div class="vote-cont" style="bottom: 0;position: fixed;">
                     <div style="height: 10px;"></div>
-                    <img class="vote-btn" src="./source/modules/vote/style/images/vote.png" onclick="submit()" style="width: 95%;" />
+                    <img class="vote-btn" src="./source/modules/vote/style/images/vote1.png" onclick="submit()" style="width: 95%;" />
                     <div style="height: 10px;"></div>
                 </div>
             <?php  } ?>

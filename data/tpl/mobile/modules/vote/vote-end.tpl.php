@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="format-detection" content="telephone=no">
 <meta http-equiv="Cache-Control" content="no-cache"> 
-<title>投票结束</title>
+<title>Finish Vote</title>
 <link type="text/css" rel="stylesheet" href="./source/modules/vote/style/vote.css" />
 <script type="text/javascript">
 
@@ -160,7 +160,7 @@
 	<div class="summary"><?php  echo $reply['description'];?></div>
             <div class="tip-cont">
                 <img class="icon" src="./source/modules/vote/style/images/tip_icon.png">
-                您已投过票，感谢您宝贵的投票 <?php  if(empty($reply['votetimes'])) { ?><br/> 您还可以投票 <?php  echo $reply['votetimes'];?> 次<?php  } ?>
+                You've already voted，Thanks. <?php  if(empty($reply['votetimes'])) { ?><br/> 您还可以投票 <?php  echo $reply['votetimes'];?> 次<?php  } ?>
             </div>
 	<div class="option-cont">
     
