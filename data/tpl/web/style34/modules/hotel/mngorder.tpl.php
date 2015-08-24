@@ -1,0 +1,164 @@
+<?php defined('IN_IA') or exit('Access Denied');?><?php  include $this->template('common/header', TEMPLATE_INCLUDEPATH);?>
+<style>
+.sub-search input,.sub-search select{margin-bottom:0;}
+</style>
+    <div class="main">
+	
+		<div class="stat">
+			<div class="stat-div">
+			
+				<div class="navbar navbar-static-top">
+
+					<div class="navbar-inner">
+
+						<span class="brand">订单管理</span>
+
+					</div>
+
+				</div>
+
+				<div class="sub-item">
+
+					<h4 class="sub-title">搜索</h4>
+
+					<form action="" method="get">
+
+						<input type="hidden" name="act" value="module" />
+
+						<input type="hidden" name="do" value="mngorder" />
+
+						<input type="hidden" name="name" value="hotel" />
+
+						<input type="hidden" name="id" value="<?php  echo $rid;?>" />
+
+						<table class="table sub-search">
+
+							<tr>
+							
+								<th>预定人</th>
+								
+								<td>
+
+									<input class="span6" name="realname" id="" type="text" value="<?php  echo $_GPC['realname'];?>">
+								
+								</td>
+								
+							</tr>
+							
+							<tr>
+							
+								<th>手机</th>
+								
+								<td>
+
+									<input class="span6" name="mobile" id="" type="text" value="<?php  echo $_GPC['mobile'];?>">
+								
+								</td>
+								
+							</tr>
+
+							<tr>
+
+								<th></th>
+
+								<td><input type="submit" name="" value="搜索" class="btn btn-primary" /></td>
+
+							</tr>
+
+						</table>
+
+					</form>
+
+				</div>
+	
+				<div class="sub-item" id="table-list">
+					<h4 class="sub-title">详细数据  |  总数:<?php  echo $total;?></h4>
+					<form action="" method="post" onsubmit="">
+					<div class="sub-content">
+						<table class="table table-hover">
+							<thead class="navbar-inner">
+								<tr>
+									<th style="width:5%;" class="row-hover" >序号</th>
+									<th style="width:10%;">预定人</th>
+									<th style="width:10%;">手机</th>
+									<th style="width:10%;">房型</th>
+									<th style="width:10%;">预定数量</th>
+									<th style="width:10%;">总价</th>
+									<th style="width:15%;">到店时间<br/>离店时间</th>
+									<th style="width:10%;">订单时间<i></i></th>
+									<th style="width:10%;">订单状态<i></i></th>
+									<th style="width:10%;">操作<i></i></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php  if(is_array($list)) { foreach($list as $row) { ?>
+								<tr>
+									<td style="text-align:center;" class="row-hover"><?php  echo $row['id'];?></td>
+									<td style="text-align:center;" ><?php  echo $row['name'];?></td>
+									<td style="text-align:center;" ><?php  echo $row['mobile'];?></td>
+									<td style="text-align:center;" ><?php  echo $row['style'];?></td>
+									<td style="text-align:center;" ><?php  echo $row['nums'];?></td>
+									<td style="text-align:center;" ><?php  echo $row['cprice'];?></td>
+									<td style="text-align:center;" ><?php  echo date("Y-m-d",$row['btime']); ?><br/><?php  echo date("Y-m-d",$row['etime']); ?></td>
+									<td style="text-align:center;" ><?php  echo date("Y-m-d H:i:s",$row['time']); ?></td>
+									<td style="text-align:center;" >
+									<?php  if($row['status'] == 0) { ?><span class="label label-info">未处理</span><?php  } ?>
+									<?php  if($row['status'] == 1) { ?><span class="label label-success">已接受</span><?php  } ?>
+									<?php  if($row['status'] == 2) { ?><span class="label label-error">已拒绝</span><?php  } ?>
+									</td>
+									<td style="text-align:center;" ><span>
+									<a href="<?php  echo $this->createWebUrl('editorder', array('id' => $row['id'],'rid' => $row['rid'])); ?>">操作</a>&nbsp;
+									<a onclick="return confirm('此操作不可恢复，确认吗？'); return false;" href="<?php  echo $this->createWebUrl('deleteorder', array('id' => $row['id']))?>">删除</a>
+									</span></td>
+								</tr>
+								<?php  } } ?>
+							</tbody>
+						</table>
+
+					</div>
+				</form>
+				<?php  echo $pager;?>
+				</div>
+			</div>
+		</div>
+    </div>
+
+<script>
+$(function() {
+	//详细数据相关操作
+	var tdIndex;
+	$("#table-list thead").delegate("th", "mouseover", function(){
+		if($(this).find("i").hasClass("")) {
+			$("#table-list thead th").each(function() {
+				if($(this).find("i").hasClass("icon-sort")) $(this).find("i").attr("class", "");
+			});
+			$("#table-list thead th").eq($(this).index()).find("i").addClass("icon-sort");
+		}
+	});
+	$("#table-list thead th").click(function() {
+		if($(this).find("i").length>0) {
+			var a = $(this).find("i");
+			if(a.hasClass("icon-sort") || a.hasClass("icon-caret-up")) { //递减排序
+				/*
+					数据处理代码位置
+				*/
+				$("#table-list thead th i").attr("class", "");
+				a.addClass("icon-caret-down");
+			} else if(a.hasClass("icon-caret-down")) { //递增排序
+				/*
+					数据处理代码位置
+				*/
+				$("#table-list thead th i").attr("class", "");
+				a.addClass("icon-caret-up");
+			}
+			$("#table-list thead th,#table-list tbody:eq(0) td").removeClass("row-hover");
+			$(this).addClass("row-hover");
+			tdIndex = $(this).index();
+			$("#table-list tbody:eq(0) tr").each(function() {
+				$(this).find("td").eq(tdIndex).addClass("row-hover");
+			});
+		}
+	});
+});
+</script>
+<?php  include $this->template('common/footer', TEMPLATE_INCLUDEPATH);?>

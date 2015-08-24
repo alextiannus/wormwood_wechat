@@ -1,0 +1,16 @@
+	<div id="footer">
+		<span class="pull-left">
+			<p>{if empty($_W['setting']['copyright']['footerleft'])}Powered by <a href="http://wormwood.com.sg"><b>WORMWOOD</b></a> V4.12 &copy; 2014 <a href="http://wormwood.com.sg">wormwood.com.sg</a>{else}{$_W['setting']['copyright']['footerleft']}{/if}</p>
+		</span>
+		<span class="pull-right">
+			<p>{if empty($_W['setting']['copyright']['footerright'])}<a href="http://wormwood.com.sg">关于WORMWOOD</a>&nbsp;&nbsp;<a href="http://wormwood.com.sg">WORMWOOD手册</a>{else}{$_W['setting']['copyright']['footerright']}{/if}&nbsp;&nbsp;{if !empty($_W['setting']['copyright']['statcode'])}{$_W['setting']['copyright']['statcode']}{/if}</p>
+		</span>
+	</div>
+	<div class="emotions" style="display:none;"></div>
+	<script>
+		{if !empty($_W['weid']) && $_W['account']['level'] == 2}
+			$.post('./account.php?act=fansync');
+		{/if}
+	</script>
+</body>
+</html>

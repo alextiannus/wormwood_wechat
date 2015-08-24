@@ -1,0 +1,233 @@
+<?php defined('IN_IA') or exit('Access Denied');?><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="./source/modules/icard/template/css/card.css?v=<?php  echo $this->cur_version?>" media="all">
+    <link rel="stylesheet" type="text/css" href="./source/modules/icard/template/css/datepicker.css" media="all">
+    <script type="text/javascript" src="./source/modules/icard/template/js/zepto.js"></script>
+    <script type="text/javascript" src="./source/modules/icard/template/js/card_share.js"></script>
+    <script type="text/javascript" src="./source/modules/icard/template/js/jQuery.js"></script>
+    <script type="text/javascript" src="./source/modules/icard/template/js/bootstrap_datepicker_card.js"></script>
+    <script type="text/javascript" src="./source/modules/icard/template/js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="./source/modules/icard/template/js/jquery-ui-1.7.2.custom.min.js"></script>
+    <title>会员卡</title>
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta name="format-detection" content="telephone=no">
+</head>
+<body id="card" ondragstart="return false;" onselectstart="return false;">
+    <?php  include $this->template('wap_header');?>
+    <section class="body">
+    <div id="overlay" style="position:fixed;z-index:100;"></div>
+    <div class="cardcenter">
+    <?php  if(empty($card)) { ?>
+    <div class="msk">
+        <p class="explain2">
+            <a id="showcard" class="receive" href="javascript:void(0)">领取您的新会员卡</a>
+            <span><?php  if(empty($business['info'])) { ?>微会员卡，方便携带收藏，永不挂失<?php  } else { ?><?php  echo $business['info'];?><?php  } ?></span>
+        </p>
+    </div>
+    <?php  } ?>
+    <div class="card" id="icard">
+        <img class="cardbg" src="<?php  echo $style['bg'];?>">
+        <?php  if(!empty($style['logo'])) { ?><img id="cardlogo" class="logo" src="<?php  echo $style['logo'];?>"><?php  } ?>
+        <h1 style="color:<?php  if(!empty($style['cardnamecolor'])) { ?><?php  echo $style['cardnamecolor'];?><?php  } else { ?>#000000<?php  } ?>"><?php  echo $style['cardname'];?></h1>
+        <strong class="pdo verify" style="color: <?php  if(!empty($style['cardnumcolor'])) { ?><?php  echo $style['cardnumcolor'];?><?php  } else { ?>#000000<?php  } ?>">
+            <span id="cdnb" style="text-align: right;margin-top: 15px;"><em><?php  echo $level['levelname'];?></em><?php  if(!empty($card)) { ?><?php  echo $card['cardpre'];?><?php  echo $card['cardno'];?><?php  } ?></span>
+        </strong>
+    </div>
+    <!--<div class="card" id="icard_bk" style="display: none;">-->
+        <!--<img class="cardbg" src="<?php  echo $style['bg'];?>">-->
+    <!--</div>-->
+    <div id="masklayer" class="masklayer off" ontouchmove="return true;" onClick="$(this).toggleClass('on');">
+    </div>
+    <p class="explain">
+        <span>使用时向服务员出示此卡</span>
+    </p>
+</div>
+<div class="cardexplain">
+    <!--会员积分信息-->
+    <div class="jifen-box">
+        <ul class="zongjifen">
+            <li>
+                <a href="<?php  echo create_url('mobile/module', array('do' => 'wapshoppinglog', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>">
+                    <div class="fengexian">
+                        <p>消费总额</p>
+                        <span><?php  echo $money;?>元</span>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="<?php  echo create_url('mobile/module', array('do' => 'wapsign', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>">
+                    <div class="fengexian">
+                        <p>剩余积分</p>
+                        <span><?php  echo $balance_score;?>分</span>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="<?php  echo create_url('mobile/module', array('do' => 'wapshoppinglog', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>">
+                    <p>剩余金额</p>
+                    <span><?php  echo $coin;?>元</span>
+                </a>
+            </li>
+        </ul>
+        <div class="clr"></div>
+    </div>
+    <!--<ul class="round" id="active">-->
+        <!--<li><a><span>会员活动</span></a></li>-->
+    <!--</ul>-->
+    <?php  if(!empty($card)) { ?>
+    <ul class="round" id="notice">
+        <li>
+            <a href="<?php  echo create_url('mobile/module', array('do' => 'wapannounce', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>">
+                <span>最新通知<em class="ok"><?php  echo $announceTotal;?></em></span>
+            </a>
+        </li>
+        <?php  if(!empty($style['show_privilege'])) { ?>
+        <li>
+            <a href="<?php  echo create_url('mobile/module', array('do' => 'wapprivilege', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>">
+                <span>会员卡特权<em class="ok"><?php  echo $privilegeTotal;?></em></span>
+            </a>
+        </li>
+        <?php  } ?>
+        <?php  if(!empty($style['show_coupon'])) { ?>
+        <li>
+            <a href="<?php  echo create_url('mobile/module', array('do' => 'wapcoupon', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>">
+                <span>会员优惠券<em class="error"><?php  echo $coupontotal;?></em></span>
+            </a>
+        </li>
+        <?php  } ?>
+        <?php  if(!empty($style['show_gift'])) { ?>
+        <li>
+            <a href="<?php  echo create_url('mobile/module', array('do' => 'wapgift', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>">
+                <span>积分换礼品<em class="ok"><?php  echo $giftTotal;?></em></span>
+            </a>
+        </li>
+        <?php  } ?>
+    </ul>
+    <ul class="round" id="powerandgift">
+        <li>
+            <a href="<?php  echo create_url('mobile/module', array('do' => 'wapsign', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>">
+                <span>签到赚积分<?php  if($issign==1) { ?><em class="ok">今日已签到</em><?php  } else { ?><em class="error">今日还未签到</em><?php  } ?></span>
+            </a>
+        </li>
+        <li>
+            <a href="<?php  echo create_url('mobile/module', array('do' => 'wapuserinfo', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>">
+                <span>个人资料</span>
+            </a>
+        </li>
+    </ul>
+    <?php  } ?>
+	<ul class="round">
+        <li><a href="<?php  echo create_url('mobile/module', array('do' => 'wapcardinfo', 'name' => 'icard', 'weid' => $weid, 'from_user' => $page_from_user))?>"><span>会员卡说明</span></a></li>
+        <li><a href="<?php  echo create_url('mobile/module', array('do' => 'wapstore', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>"><span>适用门店电话及地址</span></a></li>
+    </ul>
+    <ul class="round">
+        <?php  if(!empty($business['address'])) { ?>
+        <li class="addr">
+            <a href="http://api.map.baidu.com/marker?location=<?php  echo $business['lat'];?>,<?php  echo $business['lng'];?>&title=<?php  echo $business['place'];?>&name=<?php  echo $business['place'];?>&content=<?php  echo $business['place'];?>&output=html&src=weiba|weiweb">
+                <span>地址: <?php  echo $business['address'];?></span>
+            </a>
+        </li>
+        <?php  } ?>
+        <?php  if(!empty($business['tel'])) { ?>
+        <li class="tel">
+            <a href="tel:<?php  echo $business['tel'];?>">
+                <span>电话: <?php  echo $business['tel'];?></span>
+            </a>
+        </li>
+        <?php  } ?>
+        <?php  if(!empty($card)) { ?>
+        <li class="detail">
+            <a href="<?php  echo create_url('mobile/module', array('do' => 'waprecharge', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>">
+                <span>商家充值</span>
+            </a>
+        </li>
+        <?php  } ?>
+    </ul>
+</div>
+<?php  if(!empty($card)) { ?>
+<?php  include $this->template('footer');?>
+<?php  } ?>
+<div class="plugback">
+    <a href="javascript:history.back(-1)">
+        <div class="plugbg themeStyle">
+            <span class="plugback"></span>
+        </div>
+    </a>
+</div>
+<!--输入框-->
+<div class="window" id="windowcenter" style="height:auto!important;max-height:1000px!important;bottom:inherit!important;">
+    <div id="title" class="wtitle">领卡信息<span class="close" id="alertclose"></span></div>
+    <div class="content">
+        <div id="txt">填写真实的姓名以及电话号码，即可获得会员卡，享受会员特权。</div>
+        <p><input name="username" value="" class="px" id="username" type="text" placeholder="请输入您的姓名"></p>
+        <p><input name="tel" class="px" id="tel" value="" type="tel" placeholder="请输入您的手机号码"></p>
+        <!--<p><input name="address" class="px" id="address" value="" type="text" placeholder="请输入您的联系地址"></p>-->
+        <p id="tipinfo" style="color:#f00;"></p>
+        <input type="button" value="确 定" name="确 定" class="txtbtn" id="windowclosebutton">
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function (){
+		var now = new Date();
+		var nowArr = [now.getFullYear(), now.getMonth()+1, now.getDate()];
+		$("#birthday").each(function(k,v){
+			var ndate = $(v).datepicker({
+				format:"yyyy-mm-dd",
+				onRender: function(date) {
+					var t1 = new Date(date.valueOf());
+					var t2 = new Date(now.valueOf());
+					t1 = t1.getFullYear()+"/"+(t1.getMonth()+1)+"/"+t1.getDate();
+					t2 = t2.getFullYear()+"/"+(t2.getMonth()+1)+"/"+t2.getDate();
+					return ( t1!=t2 && (date.valueOf() > now.valueOf()) ) ? 'disabled' : '';
+				}
+			}).on("changeDate", function(date){
+		        if('days' == date.viewMode){
+					ndate.datepicker('hide');
+				}
+            });
+		});
+        $("#windowclosebutton").bind("click",
+            function() {
+//                if($("#address").val()==''){
+//                    $('#tipinfo').html('请输入地址!');
+//                    return;
+//                }
+                var submitData = {
+                };
+                $.post("<?php  echo create_url('mobile/module', array('do' => 'wapgetcard', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>"+"&username="+$("#username").val()+"&tel="+$("#tel").val()+"&address="+$("#address").val(), submitData,
+                    function(data) {
+                        if(data.message.state == 1) {
+                            window.location.href="<?php  echo create_url('mobile/module', array('do' => 'wapindex', 'name' => 'icard', 'weid' => $weid, 'from_user' => $page_from_user))?>";
+                        } else {
+                            $('#tipinfo').html(data.message.msg);
+                            //alertToUrl(data.message.msg, "<?php  echo create_url('mobile/module', array('do' => 'wapindex', 'from_user' => $page_from_user, 'name' => 'icard', 'weid' => $weid))?>");
+                        }
+                    },
+                "json");
+            });
+        $("#showcard").click(function () {
+            alert("填写真实的姓名以及电话号码，即可获得会员卡，享受会员特权。");
+            $("#overlay").css("display","block");
+        });
+    });
+
+    $("#alertclose").click(function () {
+        $("#windowcenter").slideUp(500);
+        $("#overlay").css("display","none");
+    });
+
+    function alert(title) {
+        $("#windowcenter").slideToggle("slow");
+        $("#txt").html(title);
+    }
+    function alertToUrl(title,url) {
+        if(url == '')url = window.location.href;
+        $("#windowcenter").slideToggle("slow");
+        $("#txt").html(title);
+        setTimeout("window.location.href='"+url+"'",2000);
+    }
+</script>
+
+</section>
+</body>
+</html>

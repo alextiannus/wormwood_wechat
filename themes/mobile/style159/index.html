@@ -1,0 +1,13 @@
+{template 'header'}
+{template 'slide'}
+<body id="rain1" screen_capture_injected="true" style="">
+<div class="catemenu">
+<ul>
+{loop $navs $nav}     
+<li><a href="{$nav['url']}">{$nav['name']}</a></li>
+{/loop} 
+<div class="clr"></div>
+</ul>
+</div>
+<div id="insert2"></div>
+{template 'footer'}
