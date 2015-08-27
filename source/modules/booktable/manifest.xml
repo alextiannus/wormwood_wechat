@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns="http://www.we7.cc" versionCode="0.52">
 	<application setting="false">
-		<name><![CDATA[BookTable]]></name>
-		<identifie><![CDATA[BookTable]]></identifie>
-		<version><![CDATA[1.0]]></version>
+		<name><![CDATA[booktable]]></name>
+		<identifie><![CDATA[booktable]]></identifie>
+		<version><![CDATA[2.2]]></version>
 		<type><![CDATA[other]]></type>
 		<ability><![CDATA[可以快速生成调查表单或则预约记录]]></ability>
 		<description><![CDATA[]]></description>
-		<author><![CDATA[WORMWOOD GS]]></author>
+		<author><![CDATA[WORMWOOD]]></author>
 		<url><![CDATA[http://bbs.wormwood.com]]></url>
 	</application>
 	<platform>
