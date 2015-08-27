@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.we7.cc" versionCode="0.52">
+	<application setting="false">
+		<name><![CDATA[Singers]]></name>
+		<identifie><![CDATA[singerlist]]></identifie>
+		<version><![CDATA[1.0.0]]></version>
+		<type><![CDATA[other]]></type>
+		<ability><![CDATA[歌手列表]]></ability>
+		<description><![CDATA[歌手列表]]></description>
+		<author><![CDATA[GS]]></author>
+		<url><![CDATA[http://bbs.wormwood.sg]]></url>
+	</application>
+	
+	<platform>
+		<handles>
+			<message type="text" />
+		</handles>
+		<rule embed="true" />
+	</platform>
+	<bindings>
+		
+		<menu>
+			<entry title="歌手管理" do="mmphoto"/>
+		</menu>
+		
+	</bindings>
+	<install><![CDATA[
+CREATE TABLE `ims_singer` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `age` int(3) unsigned DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `zan` int(10) DEFAULT '0' COMMENT '被赞次数',
+  `tops` varchar(20) DEFAULT NULL COMMENT '排名',
+  `txt` text COMMENT '附加信息',
+  `tou` varchar(255) DEFAULT NULL COMMENT '头像',
+  `img` varchar(255) DEFAULT NULL,
+  `createtime` int(10) DEFAULT NULL,
+  `weid` smallint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+
+	
+	]]></install>
+	<uninstall><![CDATA[]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+</manifest>
