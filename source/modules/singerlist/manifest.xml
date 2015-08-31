@@ -21,6 +21,7 @@
 		
 		<menu>
 			<entry title="歌手管理" do="mmphoto"/>
+			<entry title="送花管理" do="buyflower"/>
 		</menu>
 		
 	</bindings>

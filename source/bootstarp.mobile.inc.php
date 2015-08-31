@@ -92,7 +92,7 @@ if(is_array($session)) {
 		$cardlevel = pdo_fetch("SELECT * FROM ".tablename('card')." WHERE weid = '{$_W['weid']}'");
 		if (!empty($row)) {
 		if(!empty($row1['avatarfixed'])){$_W['fans']['avatar'] = $row1['avatarfixed'];}
-			$_W['fans']['credit1'] = $row1['credit1'];
+			$_W['fans']['credit1'] = $row['credit1'];
 			$_W['fans']['credit2'] = $row['credit2'];
 			$_W['fans']['cardsn'] = $row['cardsn'];
 			if($row1['credit1']>=$cardlevel['Lv1']&&$row1['credit1']<=$cardlevel['Lv12']){$_W['fans']['card'] = 1;}

@@ -67,15 +67,31 @@ html,body{height:100%}
 				</div>
 			</div>
 			<div class="detail">
-				<p class="title">个人资料</p>
-				<p>姓名：<?php  echo $detail['name'];?></p>
-				<p>来自：<?php  echo $detail['address'];?></p>
-				<p>年龄：<?php  if(empty($detail['age'])) { ?><?php  echo '保密'?><?php  } else { ?><?php  echo $detail['age'];?><?php  } ?></p>
-				<p>联系方式：<?php  echo $detail['phone'];?></p>
-				<p>更多信息：<?php  echo $detail['txt'];?></p>
+				<p class="title">Personal Profile</p>
+				<p>Name：<?php  echo $detail['name'];?></p>
+				<p>Address：<?php  echo $detail['address'];?></p>
+				<p>Age：<?php  if(empty($detail['age'])) { ?><?php  echo '保密'?><?php  } else { ?><?php  echo $detail['age'];?><?php  } ?></p>
+				<p>Phone：<?php  echo $detail['phone'];?></p>
+				<p>More：<?php  echo $detail['txt'];?></p>
 				
 			</div>
-			<p class="footer"><a class='btn btn-warning' id='zan' href="javascript:void(0)">赞(<span id="zz"><?php  echo $detail['zan'];?></span>)</a>    <a href='<?php  echo $this->createMobileUrl('topn')?>' class='btn btn-green' >排行榜</a></p>
+			<p class="footer"><a class='btn btn-warning' id='zan' href="javascript:void(0)">LIKE(<span id="zz"><?php  echo $detail['zan'];?></span>)</a>    <a href='<?php  echo $this->createMobileUrl('topn')?>' class='btn btn-green' >Ranking List</a></p>
+			<p class="footer">
+		
+			<select id="songV" name="songV" style="width:150px" >
+			<option value="10">10 SGD</option>
+			<option value="20">20 SGD</option>
+			<option value="50">50 SGD</option>
+			<option value="100">100 SGD</option>
+			</select>
+		
+			<a class='btn btn-warning' id='songhua' href="javascript:void(0)">送花</a>
+			</p>
+			<div class="footer">
+			(点击送花后，将从你的账户余额/积分中自动扣除)
+			</div>
+			
+			
 		</div>
 	</div>
 </div>
@@ -85,13 +101,28 @@ $(function(){
 	var httpurl ="<?php  echo $this->createMobileUrl('zan', array('zan' =>$detail['zan'],'id' => $detail['id']))?>";
 						$.getJSON(httpurl,function(data){
 						if(data.info==0){
-						alert('谢谢你的投票!');
+						alert('Thank you for your vote!');
 						}
 							$("#zz").html(data.zan);
 						})
-					})
+					});
+	
+	
+	
+	$("#songhua").on('click',function(){
+		var amount = $("#songV").val();
+		var httpurl ="<?php  echo $this->createMobileUrl('charge',array('id' => $detail['id']))?>"+"&amount="+amount;
+		
+		$.getJSON(httpurl,function(data){
+			
+				alert(data.info);
+		
+				
+			})
+	
+	});
 
-})
+});
 </script>
 </div>
 <?php  include $this->template('footer', TEMPLATE_INCLUDEPATH);?>

@@ -21,20 +21,20 @@
 	<bindings>
         <cover>
 			<entry title="会员卡入口设置" do="card" />
-			<entry title="优惠券入口设置" do="entrycoupon" />
+		<!-- 	<entry title="优惠券入口设置" do="entrycoupon" /> -->
         </cover>
 		<menu>
 			<entry title="会员卡设置" do="card" />
-			<entry title="商家设置" do="store" />
-			<entry title="会员管理" do="member" />
-			<entry title="优惠券管理" do="coupon" />
-			<entry title="消费密码管理" do="password" />
+		<!-- 	<entry title="商家设置" do="store" /> -->
+			<entry title="会员管理" do="member" />	
+			<!-- <entry title="优惠券管理" do="coupon" /> -->
+			<!-- <entry title="消费密码管理" do="password" /> -->
 		</menu>
-		<profile>
+		<!-- <profile>
 			<entry title="我的会员卡" do="mycard" />
 			<entry title="我的充值记录" do="mycredit" />
 			<entry title="我的优惠券" do="entrycoupon" />
-		</profile>
+		</profile> -->
 	</bindings>
 	<install><![CDATA[
 

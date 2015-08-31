@@ -1,0 +1,78 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li {if $op == 'top'}class="active"{/if}><a href="{php echo $this->createWebUrl('buyflower', array('op' => 'top'));}">排行榜</a></li>
+	<li {if $op == 'display'}class="active"{/if}><a href="{php echo $this->createWebUrl('buyflower', array('op' => 'display'));}">送花列表</a></li>
+</ul>
+<style>
+.table td span{display:inline-block;margin-top:4px;}
+.table td input{margin-bottom:0;}
+</style>
+{if $op == 'display'}
+<div class="main">
+	<div style="padding:15px;">
+		<table class="table table-hover table-striped">
+			<thead class="navbar-inner">
+				<tr>
+					<th >编号</th>
+					<th >歌手ID</th>
+					<th >歌手名字</th>
+					<th >送花数量</th>
+					<th >赠送人</th>
+					<th >赠送时间</th>
+					<th >状态</th>
+					<th style="text-align:right;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+					{loop $list $item}
+				<tr>
+					<td>{$item['id']}</td>
+					<td>{$item['singer_id']}</td>
+					<td>{$item['singer_name']}</td>
+					<td>{$item['send_amount']} (SGD)</td>
+					<td>{$item['send_by']}</td>
+					<td>{php echo date('Y-m-d H:i:s', $item['createtime'])}
+					</td>
+					<td>
+					{if $item['status']== 'P'}未发放{else}已发放{/if}
+					</td>
+					<td style="text-align:right;">
+						<a href="{php echo $this->createWebUrl('buyflower', array('op' => 'update', 'id' => $item['id']))}" title="发放" class="btn btn-mini"><i class="icon-hand-right"></i></a>
+						<a onclick="return confirm('此操作不可恢复，确认吗？'); return false;" href="{php echo $this->createWebUrl('buyflower', array('op' => 'del', 'id' => $item['id']))}" title="删除" class="btn btn-mini"><i class="icon-remove"></i></a>
+					</td>
+				</tr>
+				
+				{/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</div>
+</div>
+{elseif $op == 'top'}
+<div class="main">
+	<div style="padding:15px;">
+		<table class="table table-hover table-striped">
+			<thead class="navbar-inner">
+				<tr>
+					<th >歌手ID</th>
+					<th >歌手名字</th>
+					<th >送花总数量</th>
+				</tr>
+			</thead>
+			<tbody>
+					{loop $list $item}
+				<tr>
+					<td>{$item['singer_id']}</td>
+					<td>{$item['singer_name']}</td>
+					<td>{$item['send_total_amount']} (SGD)</td>
+					
+				</tr>
+				
+				{/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</div>
+</div>
+{/if}
+{template 'common/footer'}

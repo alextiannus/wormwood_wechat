@@ -14,7 +14,7 @@
 .head .order li.icon-caret-up{font-size:20px;color:#F9F9F9;position:absolute;top:-11px;right:16px;}
 </style>
 <div class="head">
-	<span class="title">房间类型列表</span>
+	<span class="title">Room Types</span>
 </div>
 <ul class="list unstyled">
 	<?php  if(is_array($tableList)) { foreach($tableList as $row) { ?>
