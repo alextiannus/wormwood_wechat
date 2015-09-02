@@ -81,7 +81,8 @@ padding-bottom: 10px;
 	</div>
 	<form action="" method="post" enctype="multipart/form-data" onsubmit="return validate();">
 	<div class="mobile-div img-rounded">
-		<div class="mobile-hd">请认真填写表单 <?php  echo $tableName;?></div>
+		<div class="mobile-hd">Please Fill Up The Form
+		 </div>
 		<div class="mobile-content">
 			<table class="form-table">
 				<?php  if(is_array($ds)) { foreach($ds as $row) { ?>
@@ -167,7 +168,7 @@ padding-bottom: 10px;
 	</div>
 	<div class="mobile-submit">
 		<input type="hidden" name="token" value="<?php  echo $_W['token'];?>" />
-		<input type="submit" class="btn btn-large btn-success submit" value="提交" name="submit" style="width:100%;">
+		<input type="submit" class="btn btn-large btn-success submit" value="Submit" name="submit" style="width:100%;">
 	</div>
 </form>
 </div>

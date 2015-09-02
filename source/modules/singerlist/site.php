@@ -155,7 +155,10 @@ class SingerlistModuleSite extends WeModuleSite {
 					include $this->template('buyflower');
 				} else 
 					if ( 'top' == $op ) {
-					$list = pdo_fetchall("select singer_id, singer_name,sum(send_amount) as send_total_amount from" .tablename('singer_flower').  " where status='D'  group by singer_id order by send_total_amount desc"); 
+					$starttime = empty($_GPC['start']) ? strtotime('-1 month') : strtotime($_GPC['start']);
+					$endtime = empty($_GPC['end']) ? TIMESTAMP : strtotime($_GPC['end']) + 86399;
+						
+					$list = pdo_fetchall("select singer_id, singer_name,sum(send_amount) as send_total_amount from" .tablename('singer_flower').  " where status='D' AND `createtime` > {$starttime} AND `createtime` < {$endtime}  group by singer_id order by send_total_amount desc"); 
 					include $this->template('buyflower');
 					}
 

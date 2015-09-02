@@ -514,6 +514,17 @@ class BooktableModuleSite extends WeModuleSite {
 			if ($pretotal >= $activity['pretotal']) {
 				message('抱歉!每人只能提交'.$activity['pretotal']."次！", referer(), 'error');
 			}
+			
+			//start
+			$tableType = $_GPC['field_34'];
+			$booktime = empty($_GPC['field_38']) ? strtotime(date('Y-m-d')) : strtotime($_GPC['field_38']);
+			
+			$totalRooms = pdo_fetchcolumn("SELECT tableAmount FROM ".tablename('research_tables')." WHERE tableName = :tableName ", array(':tableName' => $tableType));
+			$checkAmount = pdo_fetchcolumn("SELECT COUNT(*) FROM ".tablename('research_bookdetails')." WHERE tableName = :tableName and arrivalDate = :arrivalDate", array(':tableName' => $tableType,':arrivalDate' => $booktime));
+			if($checkAmount+1>$totalRooms) {
+				message('此房间已经预定满！', '', 'tips');
+			}
+			//end 
 			$row = array();
 			$row['reid'] = $reid;
 			$row['openid'] = $_W['fans']['from_user'];
@@ -575,10 +586,27 @@ class BooktableModuleSite extends WeModuleSite {
 			if(empty($rerid)) {
 				message('保存失败.');
 			}
+			
+			
 			foreach($datas as &$r) {
 				$r['rerid'] = $rerid;
+				
 				pdo_insert('research_data', $r);
-			}
+						
+			}	
+			//插入到 ims_research_booktable_details
+			$detailsData = array();
+			$detailsData['tableName'] = $_GPC['field_34'];
+			$detailsData['personNo'] = $_GPC['field_35'];
+			$detailsData['contact'] = $_GPC['field_36'];
+			$detailsData['phone'] = $_GPC['field_37'];
+			$arrivalDate = empty($_GPC['field_38']) ? TIMESTAMP : strtotime($_GPC['field_38']);
+			$detailsData['arrivalDate'] = $arrivalDate;
+			$detailsData['remark'] = $_GPC['field_39'];
+			$detailsData['status']='P';
+			$detailsData['createtime']=time();
+			pdo_insert('research_bookdetails',$detailsData);
+			
 			if(empty($activity['starttime'])) {
 				$record = array();
 				$record['starttime'] = TIMESTAMP;
@@ -653,8 +681,7 @@ class BooktableModuleSite extends WeModuleSite {
 		global $_W,$_GPC;
 		$op = !empty($_GPC['op']) ? $_GPC['op'] : 'display';//操作
 		if('post' == $op){//添加/更新座位
-		 $researchList = pdo_fetchall("SELECT * FROM " . tablename('research') . " " );
-		 
+		$researchList = pdo_fetchall("SELECT * FROM " . tablename('research') . " " );
 		$id = intval($_GPC['id']);//获得id
 			if(!empty($id)){//获取更新座位数据
 				//查找是否存在
@@ -675,15 +702,20 @@ class BooktableModuleSite extends WeModuleSite {
 					if (empty($_GPC['img'])) {
 					message('亲,记得上图哦');
 				}
+					if(!is_numeric($_GPC['tableAmount'])){
+						message('桌位数量必须为数字');
+				}
 				$reid = $_GPC['reid'];
 				$tableName = $_GPC['tableName'];
 				$tableSize= $_GPC['tableSize'];
+				$tableAmount=$_GPC['tableAmount'];
 				$img = $_GPC['img'];//图片地址
 				$txt = $_GPC['txt'];//附加文本信息
 				$data = array(
 					'reid'=>$reid,
 					'tableName'=>$tableName,
 					'tableSize'=>$tableSize,
+					'tableAmount'=>$tableAmount,
 					'img'=>$img,
 					'txt'=>$txt,
 		
@@ -722,14 +754,55 @@ class BooktableModuleSite extends WeModuleSite {
 	
 	
 	public function doMobileTableList() {
-	//这个操作被定义用来呈现 功能封面
+	
         global $_GPC, $_W;
         $pindex = max(1, intval($_GPC['page']));
         $psize = 10;
         $tableList = pdo_fetchall("SELECT * FROM " . tablename('research_tables') . " ORDER BY id DESC LIMIT " . ($pindex - 1) * $psize . ',' . $psize);
-        $total = pdo_fetchcolumn("SELECT COUNT(*) FROM ".tablename('photowall_reply')."");
+        $total = pdo_fetchcolumn("SELECT COUNT(*) FROM ".tablename('research_tables')."");
         $pager = pagination($total, $pindex, $psize);
     
 		include $this->template('tablesList');
+	}
+	
+	public function doWebBookdetails() {
+		global $_W,$_GPC;
+		$op = !empty($_GPC['op']) ? $_GPC['op'] : '';//操作
+		
+		if('del' == $op){//删除数据
+			$id = intval($_GPC['id']);
+			$row = pdo_fetch("SELECT id FROM ".tablename('research_bookdetails')." WHERE id = :id", array(':id' => $id));
+			if (empty($row)) {
+				message('亲,你的数据'.$id.'不存在,不要乱动哦！');
+			}
+			pdo_delete('research_bookdetails', array('id' => $id));
+			message('删除成功！', referer(), 'success');	
+		}
+		$booktime = empty($_GPC['booktime']) ? strtotime(date('Y-m-d')) : strtotime($_GPC['booktime']);
+		
+		$booktimeVal = date('Y-m-d ', $booktime);
+		
+		$totalRooms = pdo_fetchall("SELECT * FROM ".tablename('research_tables')." ");
+		
+		
+		$bookList = pdo_fetchall("SELECT * FROM ".tablename('research_bookdetails')." where arrivalDate=:arrivalDate ",array(':arrivalDate' => $booktime));
+		
+		foreach($totalRooms as $key => $r) {
+			
+			$tablename = $r['tableName'];
+			
+			$totalroom = $r['tableAmount'];
+			
+			$bookamount = pdo_fetchcolumn("SELECT COUNT(*) FROM ".tablename('research_bookdetails')." WHERE tableName = :tableName and arrivalDate = :arrivalDate", array(':tableName' => $tablename,':arrivalDate' =>$booktime));
+				
+			$restamount = $totalroom - $bookamount;
+			
+			$totalRooms[$key]['bookamount'] =$bookamount;
+			$totalRooms[$key]['restamount'] =$restamount;
+			
+		}
+		
+		
+		include $this->template('bookdetails');
 	}
 }

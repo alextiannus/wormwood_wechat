@@ -1,0 +1,97 @@
+{template 'common/header'}
+<style>
+.table td span{display:inline-block;margin-top:4px;}
+.table td input{margin-bottom:0;}
+</style>
+ 
+<div class="main">
+
+	<div style="padding:15px;">
+	<form action="">
+	<input type="hidden" name="act" value="module" />
+	<input type="hidden" name="name" value="booktable" />
+	<input type="hidden" name="do" value="bookdetails" />
+	<input type="hidden" name="op" value="top" />
+	<table class="table sub-search">
+		<tbody>
+			<tr>
+					<th>预定时间 </th>
+					<td>
+					{php echo tpl_form_field_date('booktime',$booktimeVal)}
+					</td>
+			</tr>
+			<tr>
+					<th></th>
+					<td style="margin-left:50px"><input type="submit" value="搜索" class="btn btn-primary" style="margin-left: 80px"></td>
+			</tr>
+		</tbody>
+	</table>
+	</form>
+	</div>
+	
+	<div style="padding:15px;">
+	
+	<table class="table sub-search">
+		<tbody>
+			<tr>
+					<th>桌位类型</th>
+					<th>桌位总数量</th>
+					<th>已预订数量</th>
+					<th>剩余数量</th>
+			</tr>
+			{loop $totalRooms $item}
+				<tr>
+					<td>{$item['tableName']}</td>
+					<td>{$item['tableAmount']}</td>
+					<td>{$item['bookamount']}</td>
+					<td>{$item['restamount']}</td>
+					
+				</tr>
+				
+				{/loop}
+		</tbody>
+	</table>
+	
+	</div>
+
+	<div style="padding:15px;">
+		<table class="table table-hover table-striped">
+			
+			<thead class="navbar-inner">
+				<tr>
+					<th >桌位类型</th>
+					<th >姓名</th>
+					<th >人数</th>
+					<th >电话</th>
+					<th >预计到达时间</th>
+					<th >备注</th>
+					<th >提交时间</th>
+					<th style="text-align:right;">操作</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+					{loop $bookList $item}
+				<tr>
+					<td>{$item['tableName']}</td>
+					<td>{$item['contact']}</td>
+					<td>{$item['personNo']}</td>
+					<td>{$item['phone']}</td>
+					<td>{php echo date('Y-m-d', $item['arrivalDate'])}</td>
+					<td>{$item['remark']}</td>
+					<td>{php echo date('Y-m-d H:i:s', $item['createtime'])}</td>
+					<td style="text-align:right;">
+						<a onclick="return confirm('此操作不可恢复，确认吗？'); return false;" href="{php echo $this->createWebUrl('bookdetails', array('op' => 'del', 'id' => $item['id']))}" title="删除" class="btn btn-mini"><i class="icon-remove"></i></a>
+					</td>
+							
+				</tr>
+				
+				{/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</div>
+</div>
+
+
+{template 'common/footer'}

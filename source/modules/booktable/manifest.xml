@@ -19,29 +19,42 @@
 	<bindings>
 		<menu>
 			<entry title="预定桌位管理" do="mmphoto"/>
-			<entry title="预约活动列表" do="display" />
-			<entry title="新建预约活动" do="post" />
+			<entry title="预定详情" do="bookdetails"/>
 		</menu>
-		<profile>
-			<entry title="我的预约" do="myresearch" />
-		</profile>
-		<home call="gethometiles"></home>
+		
 	</bindings>
 
 	<install><![CDATA[
-CREATE TABLE `ims_research_tables` (
+CREATE TABLE IF NOT EXISTS `ims_research_tables` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `reid` int(11) NOT NULL,
   `tableName` varchar(255) DEFAULT NULL,
   `tableSize` varchar(255) DEFAULT NULL,
+  `tableAmount` int(11) DEFAULT NULL,
   `img` varchar(255) DEFAULT NULL,
   `txt` text COMMENT '附加信息',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE IF NOT EXISTS  `ims_research_bookdetails` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `tableName` varchar(255) DEFAULT NULL,
+  `personNo` int(20) DEFAULT NULL,
+  `contact` varchar(255) DEFAULT NULL,
+  `phone` int(20) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  `arrivalDate` int(10) DEFAULT '0',
+  `status` varchar(10) DEFAULT NULL,
+  `createtime` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+
     ]]></install>
 	<uninstall><![CDATA[
-DROP TABLE IF EXISTS `ims_research_tables`;
+
     ]]></uninstall>
 	<upgrade><![CDATA[]]></upgrade>
 </manifest>

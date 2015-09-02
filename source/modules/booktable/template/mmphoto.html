@@ -16,6 +16,7 @@
 					<th style="width:60px">桌位编号</th>
 					<th style="width:100px;">桌位名称</th>
 					<th style="width:180px;">可坐人数</th>
+					<th style="width:180px;">桌位数量</th>
 					<th style="width:100px;text-align:right;">操作</th>
 				</tr>
 			</thead>
@@ -25,6 +26,7 @@
 					<td>{$item['id']}</td>
 					<td>{$item['tableName']}</td>
 					<td>{$item['tableSize']}</td>
+					<td>{$item['tableAmount']}</td>
 					<td style="text-align:right;">
 						<a href="{php echo $this->createWebUrl('mmphoto', array('op' => 'post', 'id' => $item['id']))}" title="编辑" class="btn btn-mini"><i class="icon-edit"></i></a>
 						<a onclick="return confirm('此操作不可恢复，确认吗？'); return false;" href="{php echo $this->createWebUrl('mmphoto', array('op' => 'del', 'id' => $item['id']))}" title="删除" class="btn btn-mini"><i class="icon-remove"></i></a>
@@ -73,6 +75,14 @@
 				<th><label for="">可坐人数</label></th>
 				<td>
 					<input type="text" class="span3" placeholder="" name="tableSize" value="{$item['tableSize']}">
+					<span class="help-block">填写桌位可以坐下的人数</span>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="">桌位数量</label></th>
+				<td>
+					<input type="text" class="span3" placeholder="" name="tableAmount" value="{$item['tableAmount']}">
+					<span class="help-block">填写桌位的数量，必须是数字</span>
 				</td>
 			</tr>
 			<tr>
