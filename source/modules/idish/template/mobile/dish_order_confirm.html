@@ -76,7 +76,7 @@
                     </li>
                     {/loop}
                 </ul>
-                <div class="group_1" data-title="选择支付方式">
+                <div class="group_1" data-title="选择支付方式" style="display:none">
                     <a href="#" class="btn_1 arrow">{if $order['dining_mode']==1}到店付款{else}货到付款{/if}</a>
                 </div>
             </article>
@@ -88,7 +88,7 @@
             </label>
         </header>
         <footer>
-            <a href="#" class="btn_2" id="confirm_order">立即预定</a>
+            <a href="#" class="btn_2" id="confirm_order">确认订单</a>
         </footer>
     </div>
     <script>
@@ -110,7 +110,7 @@
                 data: {},
                 success: function (data) {
                     if (data['message']['code'] == "1") {
-                        alert("订单已处理.");
+                        alert(data['message']['msg']);
                         window.location.href = "{php echo create_url('mobile/module', array('do' => 'orderlist', 'from_user' => $page_from_user, 'name' => 'idish', 'weid' => $weid, 'storeid' => $storeid))}";
                         $("#confirm_order").hide();
                     } else {

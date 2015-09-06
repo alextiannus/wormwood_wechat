@@ -20,10 +20,10 @@ class IdishModuleSite extends WeModuleSite
     public $msg_status_success = 1;
     public $msg_status_bad = 0;
 
-    //网站入口
+    //网站入口,直接进入list page
     public function doMobileEntrance()
     {
-        global $_W, $_GPC;
+      /*  global $_W, $_GPC;
         $this->checkAuth();
         $template_name = 'dish_index'; //默认进入首页
         $weid = $_W['weid'];
@@ -40,7 +40,51 @@ class IdishModuleSite extends WeModuleSite
 
         $nave = pdo_fetchall("SELECT * FROM " . tablename($this->modulename . '_nave') . " WHERE weid={$weid} AND status=1 ORDER BY displayorder DESC,id DESC");
 
-        include $this->template($template_name);
+        include $this->template($template_name);*/
+        
+        global $_GPC, $_W;
+        $this->checkAuth();
+        $weid = $_W['weid'];
+        $title = '全部菜品';
+        $page_from_user = base64_encode(authcode($_W['fans']['from_user'], 'ENCODE'));
+        $setting = pdo_fetch("SELECT * FROM " . tablename($this->modulename . '_setting') . " WHERE weid={$weid}  ORDER BY id DESC LIMIT 1");
+        $store = pdo_fetch("SELECT * FROM " . tablename($this->modulename . '_stores') . "  WHERE weid={$weid}  ORDER BY id DESC LIMIT 1");
+        $storeid = $store['id'];
+        
+        if (empty($page_from_user) || empty($storeid)) {
+            message('参数错误!');
+        }
+
+        $pindex = max(1, intval($_GPC['page']));
+        $psize = 20;
+        $condition = '';
+
+        if (!empty($_GPC['ccate'])) {
+            $cid = intval($_GPC['ccate']);
+            $condition .= " AND ccate = '{$cid}'";
+        } elseif (!empty($_GPC['pcate'])) {
+            $cid = intval($_GPC['pcate']);
+            $condition .= " AND pcate = '{$cid}'";
+        }
+
+        $children = array();
+        $category = pdo_fetchall("SELECT * FROM " . tablename($this->modulename . '_category') . " WHERE weid = '{$weid}' AND storeid={$storeid} ORDER BY  displayorder DESC,id DESC");
+
+        $cid = intval($category[0]['id']);
+        $category_in_cart = pdo_fetchall("SELECT goodstype,count(1) as 'goodscount' FROM " . tablename($this->modulename . '_cart') . " GROUP BY weid,storeid,goodstype,from_user  having weid = '{$weid}' AND storeid='{$storeid}' AND from_user='{$from_user}'");
+        $category_arr = array();
+        foreach ($category_in_cart as $key => $value) {
+            $category_arr[$value['goodstype']] = $value['goodscount'];
+        }
+
+        $list = pdo_fetchall("SELECT * FROM " . tablename($this->modulename . '_goods') . " WHERE weid = '{$weid}' AND storeid={$storeid} AND status = '1' AND pcate={$cid} ORDER BY displayorder DESC, subcount DESC, id DESC ");
+
+        $dish_arr = $this->getDishCountInCart($page_from_user, $storeid, $weid);
+
+        //智能点餐
+        $intelligents = pdo_fetchall("SELECT * FROM " . tablename($this->modulename . '_intelligent') . " WHERE weid={$weid} AND storeid={$storeid} GROUP BY name ORDER by name");
+
+        include $this->template('dish_list');
     }
 
     //导航首页
@@ -641,6 +685,9 @@ class IdishModuleSite extends WeModuleSite
             }
         }
         pdo_query("UPDATE " . tablename($this->modulename . '_order') . " SET status=1 WHERE id=:id", array(':id' => $orderid));
+        
+        
+        
 
         //发送短信提醒
         $smsSetting = pdo_fetch("SELECT * FROM " . tablename($this->modulename . '_sms_setting') . " WHERE weid=:weid AND storeid=:storeid LIMIT 1", array(':weid' => $weid, ':storeid' => $storeid));
@@ -728,7 +775,53 @@ class IdishModuleSite extends WeModuleSite
             $result = $this->sendmail($mail_config);
             //$result = ihttp_email($emailSetting['email'], '订单提醒', $emailSetting['email_business_tpl']);
         }
-        $this->showMessageAjax('订单确认成功，请等待处理!', $this->msg_status_success);
+        $this->chargeMember($order['totalprice']);
+        //$this->showMessageAjax('订单确认成功，请等待处理!', $this->msg_status_success);
+    }
+    
+    // 会员扣费
+    public function chargeMember($amount){
+    	global $_GPC, $_W;
+    	$jifen = intval($_W['fans']['credit1']);
+		$yuer = intval($_W['fans']['credit2']);
+		//get current user info	
+		$session = json_decode(base64_decode($_GPC['__msess']), true);
+		$row1 = pdo_fetch("SELECT * FROM ".tablename('fans')." WHERE from_user = :from_user AND weid = :weid", array(':from_user' => $session['openid'], ':weid' => $_W['weid']));
+		$mobile = $row1['mobile'];
+		
+			
+			if($yuer-$amount<0){
+				
+				$result = $jifen-($amount-$yuer)*10;   //积分按 1：10 换算
+				
+				if($result<0){
+					
+					$this->showMessageAjax('订单确认成功,由于您余额不足/不是会员，服务员会稍后送餐并收取费用', $this->msg_status_success);
+						
+				}else{
+					//先扣余额，再扣积分
+					
+					$data = array (
+						'credit2' => 0,
+						'credit1' => $result
+					);
+					//更新余额	
+					pdo_update('card_members', $data,  array('weid' => $_W['weid'], 'from_user' => $_W['fans']['from_user'])); 	
+					
+					
+				$this->showMessageAjax('付款成功,服务员会稍后送餐', $this->msg_status_success);
+					
+				}
+			}else{
+				$data = array (
+				'credit2' => $yuer-$amount
+				);
+				$reu = pdo_update('card_members', $data,  array('weid' => $_W['weid'], 'from_user' => $_W['fans']['from_user'])); //更新余额		
+				
+				$this->showMessageAjax('付款成功,服务员会稍后送餐', $this->msg_status_success);
+			}
+			
+		
     }
 
     //我的订单
@@ -744,17 +837,18 @@ class IdishModuleSite extends WeModuleSite
             message('非法操作');
         }
 
-        //未确认
-        $order_list_part1 = pdo_fetchall("SELECT a.*,b.address FROM " . tablename($this->modulename . '_order') . " AS a LEFT JOIN " . tablename($this->modulename . '_stores') . " AS b ON a.storeid=b.id  WHERE a.status=0 AND a.storeid={$storeid} AND a.from_user='{$from_user}' ORDER BY a.id DESC LIMIT 20");
+        //已完成
+        $order_list_part1 = pdo_fetchall("SELECT a.*,b.address FROM " . tablename($this->modulename . '_order') . " AS a LEFT JOIN " . tablename($this->modulename . '_stores') . " AS b ON a.storeid=b.id  WHERE a.status=3 AND a.storeid={$storeid} AND a.from_user='{$from_user}' ORDER BY a.id DESC LIMIT 20");
         foreach ($order_list_part1 as $key => $value) {
             $order_list_part1[$key]['goods'] = pdo_fetchall("SELECT a.*,b.title FROM " . tablename($this->modulename . '_order_goods') . " AS a LEFT JOIN " . tablename($this->modulename . '_goods') . " as b on a.goodsid=b.id WHERE a.weid = '{$weid}' and a.orderid={$value['id']}");
         }
-        //数量
-        $order_total_part1 = pdo_fetchcolumn("SELECT COUNT(1) FROM " . tablename($this->modulename . '_order') . " WHERE status=0 AND storeid={$storeid} AND from_user='{$from_user}' ORDER BY id DESC");
-        //已确认
-        $order_list_part2 = pdo_fetchall("SELECT a.*,b.address FROM " . tablename($this->modulename . '_order') . " AS a LEFT JOIN " . tablename($this->modulename . '_stores') . " AS b ON a.storeid=b.id  WHERE (a.status=1 OR a.status=2 OR a.status=3) AND a.storeid={$storeid} AND a.from_user='{$from_user}' ORDER BY a.id DESC LIMIT 20");
-        //数量
-        $order_total_part2 = pdo_fetchcolumn("SELECT COUNT(1) FROM " . tablename($this->modulename . '_order') . " WHERE (status=1 OR status=2 OR status=3) AND storeid={$storeid} AND from_user='{$from_user}' ORDER BY id DESC");
+        //已完成数量
+        $order_total_part1 = pdo_fetchcolumn("SELECT COUNT(1) FROM " . tablename($this->modulename . '_order') . " WHERE status=3 AND storeid={$storeid} AND from_user='{$from_user}' ORDER BY id DESC");
+        
+        //待完成
+        $order_list_part2 = pdo_fetchall("SELECT a.*,b.address FROM " . tablename($this->modulename . '_order') . " AS a LEFT JOIN " . tablename($this->modulename . '_stores') . " AS b ON a.storeid=b.id  WHERE (a.status=1 OR a.status=0 OR a.status=-1) AND a.storeid={$storeid} AND a.from_user='{$from_user}' ORDER BY a.id DESC LIMIT 20");
+        //待完成数量
+        $order_total_part2 = pdo_fetchcolumn("SELECT COUNT(1) FROM " . tablename($this->modulename . '_order') . " WHERE (status=1 OR status=0 OR status=-1) AND storeid={$storeid} AND from_user='{$from_user}' ORDER BY id DESC");
         foreach ($order_list_part2 as $key => $value) {
             $order_list_part2[$key]['goods'] = pdo_fetchall("SELECT a.*,b.title FROM " . tablename($this->modulename . '_order_goods') . " as a left join  " . tablename($this->modulename . '_goods') . " as b on a.goodsid=b.id WHERE a.weid = '{$weid}' and a.orderid={$value['id']}");
         }

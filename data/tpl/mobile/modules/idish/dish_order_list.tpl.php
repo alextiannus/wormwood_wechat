@@ -235,10 +235,10 @@
     <div class="center" id="container">
     <nav class="group_card">
         <ul>
-            <li class="card1 on" onclick="changeType('card1');">已确认(<span id="counts"><?php  echo $order_total_part1;?></span>)</li>
-            <li class="card2" onclick="changeType('card2');">待确认(<span id="counts2"><?php  echo $order_total_part2;?></span>)</li>
-            <li class="card3" onclick="changeType('card3');">已付款(<span id="counts3"><?php  echo $order_total_part3;?></span>)</li>
-            <li class="card4" onclick="changeType('card4');">已结算(<span id="counts4"><?php  echo $order_total_part4;?></span>)</li>
+            <li class="card1 on" onclick="changeType('card1');">已完成(<span id="counts"><?php  echo $order_total_part1;?></span>)</li>
+            <li class="card2" onclick="changeType('card2');">待完成(<span id="counts2"><?php  echo $order_total_part2;?></span>)</li>
+            <!-- <li class="card3" onclick="changeType('card3');">已付款(<span id="counts3"><?php  echo $order_total_part3;?></span>)</li>
+            <li class="card4" onclick="changeType('card4');">已结算(<span id="counts4"><?php  echo $order_total_part4;?></span>)</li> -->
         </ul>
     </nav>
     <div class="card1 group_list on">
@@ -250,19 +250,11 @@
                         订单号:<?php  echo $items['ordersn'];?>
                     </label>
                     <label style="margin-top: 0;">
-                        <?php  if($items['sign']==1) { ?>
+                      
                             <span style="background-color:green;color: #fff;border-radius: 5px;padding: 2px;">
-                                已处理
+                                已完成
                             </span>
-                        <?php  } else if($items['sign']==-1) { ?>
-                            <span style="background-color: #f00;color: #fff;border-radius: 5px;padding: 2px;">
-                                已拒绝
-                            </span>
-                        <?php  } else { ?>
-                            <span style="background-color:#b7b7b7;color: #fff;border-radius: 5px;padding: 2px;">
-                                未处理
-                            </span>
-                        <?php  } ?>
+                      
                     </label>
                 </header>
                 <ul class="shot_orderInfo">
@@ -277,7 +269,7 @@
                             </p>
                         </a>
                     </li>
-                    <li style="border-top: 0;height: 18px; margin-top: 0;width: 100%;">
+                   <!--  <li style="border-top: 0;height: 18px; margin-top: 0;width: 100%;">
                         <a href="javascript:;" style="color: #888; display: block;">
                             <p style="font-size: 12px;">
                                 支付类型:
@@ -286,7 +278,7 @@
                                     </span>
                             </p>
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </article>
             <article>
@@ -354,19 +346,17 @@
                         订单号:<?php  echo $items['ordersn'];?>
                     </label>
                     <label style="margin-top: 0;">
-                        <?php  if($items['sign']==1) { ?>
-                            <span style="background-color:green;color: #fff;border-radius: 5px;padding: 2px;">
-                                已处理
-                            </span>
-                        <?php  } else if($items['sign']==-1) { ?>
-                            <span style="background-color: #f00;color: #fff;border-radius: 5px;padding: 2px;">
-                                已拒绝
-                            </span>
-                        <?php  } else { ?>
+                        <?php  if($items['status']==0) { ?>
                             <span style="background-color:#b7b7b7;color: #fff;border-radius: 5px;padding: 2px;">
-                                未处理
+                                	等待用户确认
                             </span>
-                        <?php  } ?>
+                          <?php  } else { ?>
+                           <span style="background-color:#b7b7b7;color: #fff;border-radius: 5px;padding: 2px;">
+                                	正在配送...
+                            </span>
+                         <?php  } ?>
+                         
+                      
                     </label>
                 </header>
                 <ul class="shot_orderInfo">
@@ -381,7 +371,7 @@
                             </p>
                         </a>
                     </li>
-                    <li style="border-top: 0;height: 18px; margin-top: 0;width: 100%;">
+                   <!--  <li style="border-top: 0;height: 18px; margin-top: 0;width: 100%;">
                         <a href="javascript:;" style="color: #888; display: block;">
                             <p style="font-size: 12px;">
                                 支付类型:
@@ -390,7 +380,7 @@
                                     </span>
                             </p>
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </article>
             <article>
@@ -445,14 +435,16 @@
                     <p style="font-size: 12px;">店家回复: <span style="color:#f00;"><?php  echo $items['reply'];?></span></p>
                     <?php  } ?>
                 </div>
+                  <?php  if($items['status']==0) { ?>
                 <div style="padding-top: 10px; ">
                     <a href="<?php  echo $this->createMobileUrl('OrderConfirm', array('orderid' => $items['id'], 'storeid' => $item['storeid'], 'from_user' => $page_from_user))?>" class="btn_2">确认订单</a>
                 </div>
+                 <?php  } ?>
             </article>
         </section>
         <?php  } } ?>
     </div>
-    <div class="card3 group_list">
+   <!--  <div class="card3 group_list">
         <?php  if(is_array($order_list_part3)) { foreach($order_list_part3 as $items) { ?>
         <section id="des<?php  echo $items['id'];?>" style="margin-bottom: 10px; padding: 0;" class="off">
             <article>
@@ -556,7 +548,7 @@
         </section>
         <?php  } } ?>
     </div>
-    <div class="card4 group_list">
+    <div class="card4 group_list"> -->
         <?php  if(is_array($order_list_part4)) { foreach($order_list_part4 as $items) { ?>
         <section id="des<?php  echo $items['id'];?>" style="margin-bottom: 10px; padding: 0;" class="off">
             <article>

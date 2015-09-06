@@ -167,12 +167,7 @@
         <span class="pCount">请叫服务员下单</span>
         <label><i>共计：</i><b class="duiqi" id="total">0</b><b class="duiqi">元</b></label>
     </header>
-    <section style="margin-bottom: 10px;">
-        <article style="overflow: hidden;">
-            <a href="<?php  echo $this->createMobileurl('orderlist', array('from_user' => $page_from_user, 'storeid' => $storeid))?>" class="btn_add btn_myorder">我的订单</a>
-            <span style="float: right;"><?php  echo $my_order_total;?></span>
-        </article>
-    </section>
+   
     <section>
         <article>
             <h2>我的菜单
@@ -210,12 +205,12 @@
                                 <input type="radio" name="order_type" value="1" checked>
                                 <label>店内</label>
                             </span>
-                            <span>
-                                <input type="radio" name="order_type" value="2">
+                            <span style="display:none">
+                                <input type="radio" name="order_type" value="2" >
                                 <label>外卖</label>
                             </span>
-                            <span>
-                                <input type="radio" name="order_type" value="3">
+                            <span style="display:none">
+                                <input type="radio" name="order_type" value="3" > 
                                 <label>预订</label>
                             </span>
                             </div>
@@ -579,7 +574,7 @@ _onPageLoaded(function(){
 function checkItem() {
     var ordertype = $(':radio[name="order_type"]:checked').val();
     if ($("#tel").val() == "" || $("#tel").val() == "(必填*)请输入您的手机号码") { alert("请输入您的电话号码！"); return false; }
-    if (!/^1[3|4|5|8][0-9]\d{8}$/.test($("#tel").val())) { alert("请输入正确的电话号码！"); return false; }
+   // if (!/^1[3|4|5|8][0-9]\d{8}$/.test($("#tel").val())) { alert("请输入正确的电话号码！"); return false; }
     if ($("#name").val() == "" || $("#name").val() == "(必填*)请输入您的真实姓名") { alert("请输入您的真实姓名！"); return false; }
     if ($("#total").text() == "0") { alert("金额为0，请选择菜品！"); return false; }
     if (ordertype == 1) {
