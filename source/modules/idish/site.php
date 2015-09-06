@@ -775,12 +775,12 @@ class IdishModuleSite extends WeModuleSite
             $result = $this->sendmail($mail_config);
             //$result = ihttp_email($emailSetting['email'], '订单提醒', $emailSetting['email_business_tpl']);
         }
-        $this->chargeMember($order['totalprice']);
+        $this->chargeMember($order['totalprice'],$orderid);
         //$this->showMessageAjax('订单确认成功，请等待处理!', $this->msg_status_success);
     }
     
     // 会员扣费
-    public function chargeMember($amount){
+    public function chargeMember($amount,$orderid){
     	global $_GPC, $_W;
     	$jifen = intval($_W['fans']['credit1']);
 		$yuer = intval($_W['fans']['credit2']);
@@ -796,8 +796,8 @@ class IdishModuleSite extends WeModuleSite
 				
 				if($result<0){
 					
+					pdo_query("UPDATE " . tablename($this->modulename . '_order') . " SET status=2 WHERE id=:id", array(':id' => $orderid));
 					$this->showMessageAjax('订单确认成功,由于您余额不足/不是会员，服务员会稍后送餐并收取费用', $this->msg_status_success);
-						
 				}else{
 					//先扣余额，再扣积分
 					

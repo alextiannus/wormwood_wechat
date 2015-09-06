@@ -117,13 +117,13 @@
                     </td>
 					<td>{$item['totalprice']} 元</td>
 					<td>
-                    {if $item['status'] == 0}<span class="label label-danger">未确认</span>{/if}
-                    {if $item['status'] == 1}<span class="label label-info">已确认</span>{/if}
-					{if $item['status'] == 2}<span class="label label-success">已付款</span>{/if}
+                    {if $item['status'] == 0}<span class="label label-danger">客户未确认</span>{/if}
+                    {if $item['status'] == 1}<span class="label label-info">等待配送</span>{/if}
+					{if $item['status'] == 2}<span class="label label-warning">等待配送(未付款)</span>{/if}
 					{if $item['status'] == 3}<span class="label label-success">已完成</span>{/if}
 					{if $item['status'] == -1}<span class="label label-success">已关闭</span>{/if}
-                    {if $item['print_sta'] == -1}<span class="label label-success">未打印</span>
-                        {else}<span class="label label-info">已打印</span>{/if}
+                   <!--  {if $item['print_sta'] == -1}<span class="label label-success">未打印</span>
+                        {else}<span class="label label-info">已打印</span>{/if} -->
                     </td>
 					<td>{php echo date('Y-m-d H:i:s', $item['dateline'])}</td>
 					<td style="text-align:right;"><a href="{php echo $this->createWebUrl('order', array('op' => 'detail', 'id' => $item['id'], 'storeid' => $storeid))}">查看订单</a></td>
