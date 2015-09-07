@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<title>订单确认页</title>
+<title>Order Confirm Page</title>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 <meta name="format-detection" content="telephone=no" />
@@ -55,8 +55,8 @@
                 <ul>
                     <li style="border-top: 0; margin-top: 0;" class="arrow">
                         <a href="#" style="color: #888; display: block;">
-                            <p style="font-size: 12px;">订餐人：{$order['username']} 门店名称：{$store['title']}</p>
-                            <p style="font-size: 15px; color: #000;">门店地址：{$store['address']}</p>
+                            <p style="font-size: 12px;">Store Name：{$store['title']}</p>
+                            <p style="font-size: 15px; color: #000;">Store Address：{$store['address']}</p>
                         </a>
                     </li>
                 </ul>
@@ -64,12 +64,12 @@
         </section>
         <section style="margin-bottom: 20px;">
             <article>
-                <label style="line-height: 30px; font-size: 16px; font-weight: bold; margin-left: 10px;">我的菜单</label>
+                <label style="line-height: 30px; font-size: 16px; font-weight: bold; margin-left: 10px;">My Menu</label>
                 <ul id="myorder" class="myorder">
                     {loop $goodslist $item}
                     <li class="dish_item">
                         <span class="dishName">{$item['title']}</span>
-                        <i>{if $item['isspecial'] == 1}{$item['productprice']}{else}{$item['marketprice']}{/if}元/{$item['unitname']}</i>
+                        <i>{if $item['isspecial'] == 1}{$item['productprice']}{else}{$item['marketprice']}{/if} SGD </i>
                         <section class="bbox">
                             <input class="numBox" name="numBox" type="text" value="{$item['total']}" readonly="readonly">
                         </section>
@@ -83,23 +83,23 @@
         </section>
         <header style="border-bottom: 1px solid #ccc; overflow: hidden;">
             <label style="margin-top: 0;">
-                <i>应付金额：</i>
-                <b class="duiqi"><span id="total">{$order['totalprice']}</span>元</b>
+                <i>Amount Payable：</i>
+                <b class="duiqi"><span id="total">{$order['totalprice']}</span>&nbsp;SGD</b>
             </label>
         </header>
         <footer>
-            <a href="#" class="btn_2" id="confirm_order">确认订单</a>
+            <a href="#" class="btn_2" id="confirm_order">Confirm</a>
         </footer>
     </div>
     <script>
         $(function () {
             $("#confirm_order").click(function () {
                 MDialog.confirm(
-                        '', '确认下单吗？', null,
-                        '确定', function(){
+                        '', 'Confirm Order？', null,
+                        'Confirm', function(){
                             postmain();
                         }, null,
-                        '取消', null, null,null, true, true
+                        'Cancel', null, null,null, true, true
                 );
             });
         });
@@ -114,11 +114,11 @@
                         window.location.href = "{php echo create_url('mobile/module', array('do' => 'orderlist', 'from_user' => $page_from_user, 'name' => 'idish', 'weid' => $weid, 'storeid' => $storeid))}";
                         $("#confirm_order").hide();
                     } else {
-                        alert("订单处理错误...");
+                        alert("order process error...");
                     }
                 },
                 error: function () {
-                    alert("网络异常!...");
+                    alert("NetWork Error!...");
                 }
             });
         }

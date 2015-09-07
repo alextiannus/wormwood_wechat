@@ -607,6 +607,7 @@ class IdishModuleSite extends WeModuleSite
             //'dining_mode' => $setting['dining_mode'], //用餐模式
             'dining_mode' => $ordertype, //订单类型
             'remark' => $remark, //备注
+            'tables' => $tables,
             'address' => $address, //地址
             'status' => 0, //状态
             'dateline' => TIMESTAMP
@@ -798,7 +799,7 @@ class IdishModuleSite extends WeModuleSite
 				if($result<0){
 					
 					pdo_query("UPDATE " . tablename($this->modulename . '_order') . " SET status=2 WHERE id=:id", array(':id' => $orderid));
-					$this->showMessageAjax('订单确认成功,由于您余额不足/不是会员，服务员会稍后送餐并收取费用', $this->msg_status_success);
+					$this->showMessageAjax('Your Order Confirm Sucessfully, Cos Your Lack of Balance / Not A Member, Our Waiter Will Send The Meal ASAP And Charge You '.$amount.' SGD', $this->msg_status_success);
 				}else{
 					//先扣余额，再扣积分
 					
@@ -847,9 +848,9 @@ class IdishModuleSite extends WeModuleSite
         $order_total_part1 = pdo_fetchcolumn("SELECT COUNT(1) FROM " . tablename($this->modulename . '_order') . " WHERE status=3 AND storeid={$storeid} AND from_user='{$from_user}' ORDER BY id DESC");
         
         //待完成
-        $order_list_part2 = pdo_fetchall("SELECT a.*,b.address FROM " . tablename($this->modulename . '_order') . " AS a LEFT JOIN " . tablename($this->modulename . '_stores') . " AS b ON a.storeid=b.id  WHERE (a.status=1 OR a.status=0 OR a.status=-1) AND a.storeid={$storeid} AND a.from_user='{$from_user}' ORDER BY a.id DESC LIMIT 20");
+        $order_list_part2 = pdo_fetchall("SELECT a.*,b.address FROM " . tablename($this->modulename . '_order') . " AS a LEFT JOIN " . tablename($this->modulename . '_stores') . " AS b ON a.storeid=b.id  WHERE (a.status=1 OR a.status=0 OR a.status=-1 OR a.status=2) AND a.storeid={$storeid} AND a.from_user='{$from_user}' ORDER BY a.id DESC LIMIT 20");
         //待完成数量
-        $order_total_part2 = pdo_fetchcolumn("SELECT COUNT(1) FROM " . tablename($this->modulename . '_order') . " WHERE (status=1 OR status=0 OR status=-1) AND storeid={$storeid} AND from_user='{$from_user}' ORDER BY id DESC");
+        $order_total_part2 = pdo_fetchcolumn("SELECT COUNT(1) FROM " . tablename($this->modulename . '_order') . " WHERE (status=1 OR status=0 OR status=-1 OR status=2) AND storeid={$storeid} AND from_user='{$from_user}' ORDER BY id DESC");
         foreach ($order_list_part2 as $key => $value) {
             $order_list_part2[$key]['goods'] = pdo_fetchall("SELECT a.*,b.title FROM " . tablename($this->modulename . '_order_goods') . " as a left join  " . tablename($this->modulename . '_goods') . " as b on a.goodsid=b.id WHERE a.weid = '{$weid}' and a.orderid={$value['id']}");
         }

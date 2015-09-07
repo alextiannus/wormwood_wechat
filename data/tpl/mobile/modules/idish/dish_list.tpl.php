@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <meta name="format-detection" content="telephone=no">
-<title>全部菜品</title>
+<title>All Dishes</title>
 <link rel="stylesheet" type="text/css" href="./source/modules/idish/template/css/1/wei_canyin_v1.8.4.css?v=1.1" media="all">
 <link rel="stylesheet" type="text/css" href="./source/modules/idish/template/css/1/wei_dialog_v1.2.1.css?v=1.1" media="all">
 <style>
@@ -52,12 +52,12 @@
                     <dd><?php  if($row['isspecial']==1) { ?>
                         <em><?php  echo $row['productprice'];?>元/<?php  echo $row['unitname'];?></em>
                         <?php  } else if($row['isspecial']==3) { ?>
-                        <em><b class="vip">会员</b><?php  echo $row['marketprice'];?>元/<?php  echo $row['unitname'];?><br><del><?php  echo $row['productprice'];?>元/<?php  echo $row['unitname'];?></del></em>
+                        <em><b class="vip">Member</b><?php  echo $row['marketprice'];?> SGD<br><del><?php  echo $row['productprice'];?> SGD</del></em>
                         <?php  } else if($row['isspecial']==2) { ?>
-                        <em class="sale"><b>特价</b><?php  echo $row['marketprice'];?>元/<?php  echo $row['unitname'];?><br><del><?php  echo $row['productprice'];?>元/<?php  echo $row['unitname'];?></del></em>
+                        <em class="sale"><b>On Sale</b><?php  echo $row['marketprice'];?> SGD<br><del><?php  echo $row['productprice'];?> SGD</del></em>
                         <?php  } ?>
                     </dd>
-                    <dd class="dpNum"><?php  echo $row['subcount'];?>人点过</dd>
+                    <dd class="dpNum"><?php  echo $row['subcount'];?> Persons Clicked</dd>
                     <dd class="btn">
                         <button class="minus" style="display:inline-block;"><strong></strong></button>
                         <i style="display: inline-block;"><?php  if(!empty($dish_arr[$row['id']])) { ?><?php  echo $dish_arr[$row['id']];?><?php  } else { ?>0<?php  } ?></i>
@@ -70,11 +70,11 @@
         </article>
     </section>
     <footer class="footFix footLeft">
-    <button class="btn_change" onclick="location.href='<?php  echo $this->createMobileurl('wapmenu', array('from_user' => $page_from_user, 'storeid' => $storeid))?>'">我的菜单<!--span class="num">2</span--></button>
+    <button class="btn_change" onclick="location.href='<?php  echo $this->createMobileurl('wapmenu', array('from_user' => $page_from_user, 'storeid' => $storeid))?>'">My Menu<!--span class="num">2</span--></button>
     <?php  if(!empty($intelligents)) { ?>
     <button onclick="location.href='<?php  echo $this->createMobileurl('wapselect', array('from_user' => $page_from_user, 'storeid' => $storeid))?>'">智能选餐</button>
     <?php  } ?>
-    <button onclick="location.href='<?php  echo $this->createMobileurl('orderlist', array('from_user' => $page_from_user, 'storeid' => $storeid))?>'">我的订单</button>
+    <button onclick="location.href='<?php  echo $this->createMobileurl('orderlist', array('from_user' => $page_from_user, 'storeid' => $storeid))?>'">My Order</button>
 
     </footer>
 </div>
@@ -122,11 +122,11 @@
                         //alert(key);
                         var dish = dishList[key];
                         if (dish.dIsSpecial == view_const_dish_SPECIAL_PRICE_YES) {
-                            var priceHtml = "<em class='sale'><b>特价</b>"+dish['dSpecialPrice']+"元/"+dish['unitname']+"<br/><del>"+dish['dPrice']+"元/"+dish['unitname']+"</del></em>";
+                            var priceHtml = "<em class='sale'><b>On Sale</b>"+dish['dSpecialPrice']+" SGD "+""+"<br/><del>"+dish['dPrice']+" SGD"+""+"</del></em>";
                         } else if (dish.dIsSpecial == view_const_dish_SPECIAL_PRICE_VIP) {
-                            var priceHtml = "<em><b class='vip'>会员</b>"+dish['dSpecialPrice']+"元/"+dish['unitname']+"<br/><del>"+dish['dPrice']+"元/"+dish['unitname']+"</del></em>";
+                            var priceHtml = "<em><b class='vip'>Member</b>"+dish['dSpecialPrice']+" SGD "+""+"<br/><del>"+dish['dPrice']+" SGD"+""+"</del></em>";
                         } else {
-                            var priceHtml = "<em>"+dish['dPrice']+"元/"+dish['unitname']+"</em>";
+                            var priceHtml = "<em>"+dish['dPrice']+" SGD"+""+"</em>";
                         }
                         if (dish.dIsHot == view_const_dish_HOT_YES) {
                             var hotHtml = '<span></span>';
@@ -134,7 +134,7 @@
                             var hotHtml = '';
                         }
                         if (dish['dSubCount']) {
-                            var dSubCountHtml = dish['dSubCount'] + '人点过';
+                            var dSubCountHtml = dish['dSubCount'] + ' Persons Clicked';
                         } else {
                             var dSubCountHtml = '';
                         }

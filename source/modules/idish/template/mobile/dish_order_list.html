@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <title>我的订单</title>
+    <title>My Order List</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta name="format-detection" content="telephone=no" />
@@ -230,13 +230,13 @@
         }
     </style>
     <div class="headselect">
-        <a class="link_tel icon-phone headtext">我的订单</a>
+        <a class="link_tel icon-phone headtext">My Order List</a>
     </div>
     <div class="center" id="container">
     <nav class="group_card">
         <ul>
-            <li class="card1 on" onclick="changeType('card1');">已完成(<span id="counts">{$order_total_part1}</span>)</li>
-            <li class="card2" onclick="changeType('card2');">待完成(<span id="counts2">{$order_total_part2}</span>)</li>
+            <li class="card1 on" onclick="changeType('card1');">Finished(<span id="counts">{$order_total_part1}</span>)</li>
+            <li class="card2" onclick="changeType('card2');">To Be Done(<span id="counts2">{$order_total_part2}</span>)</li>
             <!-- <li class="card3" onclick="changeType('card3');">已付款(<span id="counts3">{$order_total_part3}</span>)</li>
             <li class="card4" onclick="changeType('card4');">已结算(<span id="counts4">{$order_total_part4}</span>)</li> -->
         </ul>
@@ -247,12 +247,12 @@
             <article>
                 <header style="border-bottom: 1px solid #ddd; overflow: hidden; margin: 0;">
                     <label style="margin-top: 0;float: left;color: #000;font-size: 14px;">
-                        订单号:{$items['ordersn']}
+                        Order No. : {$items['ordersn']}
                     </label>
                     <label style="margin-top: 0;">
                       
                             <span style="background-color:green;color: #fff;border-radius: 5px;padding: 2px;">
-                                已完成
+                                Finished
                             </span>
                       
                     </label>
@@ -261,11 +261,11 @@
                     <li style="border-top: 0;height: 18px; margin-top: 0;width: 100%;">
                         <a href="javascript:;" style="color: #888; display: block;">
                             <p style="font-size: 12px;">
-                                订单类型:
+                                Order Type:
                                     <span style="color:#f00;">
-                                        {if $items['dining_mode']==1}店内{elseif  $items['dining_mode']==2}外卖{else}预订{/if}
+                                        {if $items['dining_mode']==1}Online{elseif  $items['dining_mode']==2}外卖{else}预订{/if}
                                     </span>
-                                下单日期:{php echo date('Y-m-d h:i:s',$items['dateline'])}
+                                Order Time:{php echo date('Y-m-d h:i:s',$items['dateline'])}
                             </p>
                         </a>
                     </li>
@@ -282,12 +282,12 @@
                 </ul>
             </article>
             <article>
-                <label>我的菜单</label>
+                <label>My Menu</label>
                 <ul id="Ul{$items['id']}" class="myorder">
                     {loop $items['goods'] $item}
                     <li>
                         <span class="dishName">{$item['title']}</span>
-                        <i>{$item['price']}元/份</i>
+                        <i>{$item['price']} SGD</i>
                         <section class="bbox">
                             <input class="numBox" name="numBox" type="text" value="{$item['total']}" readonly="readonly">
                         </section>
@@ -302,11 +302,11 @@
                 {/if}
                 <header style="border-bottom: 1px solid #ddd; overflow: hidden; margin: 0;">
                     <label style="margin-top: 0;">
-                        <i>应付金额：</i>
-                        <b class="duiqi"><span>{$items['totalprice']}</span>元</b>
+                        <i>Amount Payable：</i>
+                        <b class="duiqi"><span>{$items['totalprice']}</span>&nbsp;SGD</b>
                     </label>
                 </header>
-                <div style="padding-top: 10px;padding-left: 10px;">
+                <div style="padding-top: 10px;padding-left: 10px; display:none;">
                     {if $items['dining_mode']!=1}
                     <p style="font-size: 12px;">姓名:{$items['username']}</p>
                     <p style="font-size: 12px;">电话:{$items['tel']}</p>
@@ -343,16 +343,16 @@
             <article>
                 <header style="border-bottom: 1px solid #ddd; overflow: hidden; margin: 0;">
                     <label style="margin-top: 0;float: left;color: #000;font-size: 14px;">
-                        订单号:{$items['ordersn']}
+                        Order No. : {$items['ordersn']}
                     </label>
                     <label style="margin-top: 0;">
                         {if $items['status']==0}
                             <span style="background-color:#b7b7b7;color: #fff;border-radius: 5px;padding: 2px;">
-                                	等待用户确认
+                                	Waiting For User Confrim
                             </span>
                           {else}
                            <span style="background-color:#b7b7b7;color: #fff;border-radius: 5px;padding: 2px;">
-                                	正在配送...
+                                	Under Distribution...
                             </span>
                          {/if}
                          
@@ -363,11 +363,11 @@
                     <li style="border-top: 0;height: 18px; margin-top: 0;width: 100%;">
                         <a href="javascript:;" style="color: #888; display: block;">
                             <p style="font-size: 12px;">
-                                订单类型:
+                                Order Type:
                                     <span style="color:#f00;">
-                                        {if $items['dining_mode']==1}店内{elseif  $items['dining_mode']==2}外卖{else}预订{/if}
+                                        {if $items['dining_mode']==1}Online{elseif  $items['dining_mode']==2}OutSide{else}Book{/if}
                                     </span>
-                                下单日期:{php echo date('Y-m-d h:i:s',$items['dateline'])}
+                                Order Time:{php echo date('Y-m-d h:i:s',$items['dateline'])}
                             </p>
                         </a>
                     </li>
@@ -384,12 +384,12 @@
                 </ul>
             </article>
             <article>
-                <label>我的菜单</label>
+                <label>My Menu</label>
                 <ul id="Ul{$items['id']}" class="myorder">
                     {loop $items['goods'] $item}
                     <li>
                         <span class="dishName">{$item['title']}</span>
-                        <i>{$item['price']}元/份</i>
+                        <i>{$item['price']} SGD</i>
                         <section class="bbox">
                             <input class="numBox" name="numBox" type="text" value="{$item['total']}" readonly="readonly">
                         </section>
@@ -404,35 +404,18 @@
                 {/if}
                 <header style="border-bottom: 1px solid #ddd; overflow: hidden; margin: 0;">
                     <label style="margin-top: 0;">
-                        <i>应付金额：</i>
-                        <b class="duiqi"><span>{$items['totalprice']}</span>元</b>
+                        <i>Amount Payable：</i>
+                        <b class="duiqi"><span>{$items['totalprice']}</span>&nbsp;SGD</b>
                     </label>
                 </header>
-                <div style="padding-top: 10px;padding-left: 10px;">
-                    {if $items['dining_mode']!=1}
-                    <p style="font-size: 12px;">姓名:{$items['username']}</p>
-                    <p style="font-size: 12px;">电话:{$items['tel']}</p>
-                    {/if}
-                    {if $items['dining_mode']==2}
-                    <p style="font-size: 12px;">地址:{$items['address']}</p>
-                    {/if}
-                    {if $items['dining_mode']!=2}
-                    <p style="font-size: 12px;">人数: {$items['counts']}</p>
-                    {/if}
-                    {if $items['dining_mode']==1 || $items['dining_mode']==3}
-                    <p style="font-size: 12px;">就餐形式: {if $items['seat_type']==1}大厅{else}包厢{/if}</p>
-                    {/if}
-                    {if $items['seat_type']==1 && $items['dining_mode']==1}<p style="font-size: 12px;">桌号: {$items['tables']}</p>{/if}
-                    {if $items['dining_mode']==3}
-                    {if !empty($items['carports'])}
-                    <p style="font-size: 12px;">预订车位: {$items['carports']}</p>
-                    {/if}
-                    {/if}
-                    {if !empty($items['remark'])}
-                    <p style="font-size: 12px;">备注: {$items['remark']}</p>
-                    {/if}
+                <div style="padding-top: 10px;padding-left: 10px; ">
+                  
+                  <p style="font-size: 12px;">Room No./Table No. : {$items['tables']}</p>
+                   
+                  <p style="font-size: 12px;">Remark: {$items['remark']}</p>
+                 
                     {if !empty($items['reply'])}
-                    <p style="font-size: 12px;">店家回复: <span style="color:#f00;">{$items['reply']}</span></p>
+                    <p style="font-size: 12px;">Reply: <span style="color:#f00;">{$items['reply']}</span></p>
                     {/if}
                 </div>
                   {if $items['status']==0}
@@ -653,8 +636,8 @@
         {/loop}
     </div>
     <footer class="footFix footLeft">
-        <a onclick="location.href='{php echo create_url('mobile/module', array('do' => 'waprestlist', 'from_user' => $page_from_user, 'name' => 'idish', 'weid' => $weid, 'storeid' => $storeid))}'">门店列表</a>
-        <a onclick="location.href='{php echo create_url('mobile/module', array('do' => 'waplist', 'from_user' => $page_from_user, 'name' => 'idish', 'weid' => $weid, 'storeid' => $storeid))}'">菜品列表</a>
+       <!--  <a onclick="location.href='{php echo create_url('mobile/module', array('do' => 'waprestlist', 'from_user' => $page_from_user, 'name' => 'idish', 'weid' => $weid, 'storeid' => $storeid))}'">门店列表</a> -->
+        <a onclick="location.href='{php echo create_url('mobile/module', array('do' => 'waplist', 'from_user' => $page_from_user, 'name' => 'idish', 'weid' => $weid, 'storeid' => $storeid))}'">Dishes List</a>
     </footer>
     </div>
     <script>
