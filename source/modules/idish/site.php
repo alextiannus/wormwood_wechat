@@ -811,7 +811,7 @@ class IdishModuleSite extends WeModuleSite
 					pdo_update('card_members', $data,  array('weid' => $_W['weid'], 'from_user' => $_W['fans']['from_user'])); 	
 					
 					
-				$this->showMessageAjax('付款成功,服务员会稍后送餐', $this->msg_status_success);
+				$this->showMessageAjax('Your Payment Sucessfully ,Our Waiter Will Send The Meal to You ASAP', $this->msg_status_success);
 					
 				}
 			}else{
@@ -820,7 +820,7 @@ class IdishModuleSite extends WeModuleSite
 				);
 				$reu = pdo_update('card_members', $data,  array('weid' => $_W['weid'], 'from_user' => $_W['fans']['from_user'])); //更新余额		
 				
-				$this->showMessageAjax('付款成功,服务员会稍后送餐', $this->msg_status_success);
+				$this->showMessageAjax('Your Payment Sucessfully ,Our Waiter Will Send The Meal to You ASAP', $this->msg_status_success);
 			}
 			
 		
