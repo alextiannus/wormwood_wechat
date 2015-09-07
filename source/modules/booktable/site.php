@@ -753,7 +753,7 @@ class BooktableModuleSite extends WeModuleSite {
 	}
 	
 	
-	public function doMobileTableList() {
+/*	public function doMobileTableList() {
 	
         global $_GPC, $_W;
         $pindex = max(1, intval($_GPC['page']));
@@ -763,7 +763,21 @@ class BooktableModuleSite extends WeModuleSite {
         $pager = pagination($total, $pindex, $psize);
     
 		include $this->template('tablesList');
-	}
+	}*/
+	
+	public function doMobileEntrance()
+    {
+    	   global $_GPC, $_W;
+        $pindex = max(1, intval($_GPC['page']));
+        $psize = 10;
+        $tableList = pdo_fetchall("SELECT * FROM " . tablename('research_tables') . " ORDER BY id DESC LIMIT " . ($pindex - 1) * $psize . ',' . $psize);
+        $total = pdo_fetchcolumn("SELECT COUNT(*) FROM ".tablename('research_tables')."");
+        $pager = pagination($total, $pindex, $psize);
+    
+		include $this->template('tablesList');
+	
+    
+    }
 	
 	public function doWebBookdetails() {
 		global $_W,$_GPC;

@@ -43,7 +43,8 @@ class IdishModuleSite extends WeModuleSite
         include $this->template($template_name);*/
         
         global $_GPC, $_W;
-        $this->checkAuth();
+        //$this->checkAuth();
+        checkauth();
         $weid = $_W['weid'];
         $title = '全部菜品';
         $page_from_user = base64_encode(authcode($_W['fans']['from_user'], 'ENCODE'));

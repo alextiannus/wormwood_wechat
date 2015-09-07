@@ -18,6 +18,9 @@
 		<rule embed="true" />
 	</platform>
 	<bindings>
+	 <cover>
+        <entry title="singerList入口设置" do="entrance" />
+    </cover>
 		
 		<menu>
 			<entry title="歌手管理" do="mmphoto"/>
@@ -26,7 +29,7 @@
 		
 	</bindings>
 	<install><![CDATA[
-CREATE TABLE `ims_singer` (
+CREATE TABLE IF NOT EXISTS `ims_singer` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,

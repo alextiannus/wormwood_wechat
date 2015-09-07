@@ -208,13 +208,13 @@ class SingerlistModuleSite extends WeModuleSite {
 		include $this->template('topn');
 	}
 
-	public function doMobileSingerList() { //排行榜功能
+/*	public function doMobileSingerList() { //排行榜功能
 		global $_GPC, $_W;
 		$condition = '';
 		$list = pdo_fetchall("SELECT * FROM " . tablename('singer') . " WHERE weid = '{$_W['weid']}' $condition ORDER BY id"); //分页
 
 		include $this->template('singerList');
-	}
+	}*/
 
 	public function doMobileCharge() { //送花功能
 		global $_GPC, $_W;
@@ -291,6 +291,18 @@ class SingerlistModuleSite extends WeModuleSite {
 			
 		}
 	}
+	
+	public function doMobileEntrance()
+    {
+    	 //排行榜功能
+		global $_GPC, $_W;
+		$condition = '';
+		$list = pdo_fetchall("SELECT * FROM " . tablename('singer') . " WHERE weid = '{$_W['weid']}' $condition ORDER BY id"); //分页
+
+		include $this->template('singerList');
+	
+    
+    }
 	
 		public function doMobileTest() { 
 			

@@ -17,6 +17,9 @@
 		<rule embed="true" />
 	</platform>
 	<bindings>
+	 <cover>
+        <entry title="预定桌位入口设置" do="entrance" />
+    </cover>
 		<menu>
 			<entry title="预定桌位管理" do="mmphoto"/>
 			<entry title="预定详情" do="bookdetails"/>
