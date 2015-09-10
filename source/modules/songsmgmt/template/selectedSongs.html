@@ -1,0 +1,64 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+
+	<li class="active"><a href="javascript:void(0);">已点歌曲列表</a></li>
+</ul>
+<style>
+.table td span{display:inline-block;margin-top:4px;}
+.table td input{margin-bottom:0;}
+</style>
+{if $op == 'display'}
+<div class="main">
+	<div style="padding:15px;">
+		<table class="table table-hover table-striped">
+			<thead class="navbar-inner">
+				<tr>
+					<th >序号</th>
+					<th >歌手名字</th>
+					<th >歌曲名字</th>
+					<th >应付金额</th>
+					<th >提交人</th>
+					<th >状态</th>
+					<th >创建时间</th>
+					<th style="text-align:right;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+					{loop $list $item}
+				<tr>
+					<td>{$item['id']}</td>
+					<td>{$item['name']}</td>
+					<td>{$item['title']}</td>
+					<td>{$item['payamount']}</td>
+					<td>{$item['selectedby']}</td>
+					<td>
+					{if $item['status'] ==1}
+						未付款(非会员)
+					{else if $item['status'] ==2}
+						未付款(会员)
+					{else if $item['status'] ==3}
+						已付款
+					{else if $item['status'] ==4}
+						演唱完成
+					{/if}
+					</td>
+					<td>{php echo date('Y-m-d H:i:s', $item['createtime'])}</td>
+					<td style="text-align:right;">
+					{if $item['status'] ==3}
+					<a href="{php echo $this->createWebUrl('selectedSongs', array('op' => 'updateF', 'id' => $item['id']))}" title="Finished" class="btn btn-mini"><i class="icon-check"></i></a>
+					{else if $item['status'] ==2 || $item['status'] ==1}
+					<a href="{php echo $this->createWebUrl('selectedSongs', array('op' => 'updateP', 'id' => $item['id']))}" title="Payment" class="btn btn-mini"><i class="icon-money"></i></a>
+					{/if}
+						
+					<a onclick="return confirm('确认删除?'); return false;" href="{php echo $this->createWebUrl('selectedSongs', array('op' => 'del', 'id' => $item['id']))}" title="鍒犻櫎" class="btn btn-mini"><i class="icon-remove"></i></a>
+					</td>
+				</tr>
+				
+				{/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</div>
+</div>
+{/if}
+{template 'common/footer'}

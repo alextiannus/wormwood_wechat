@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.we7.cc" versionCode="0.52">
+	<application setting="false">
+		<name><![CDATA[Songs]]></name>
+		<identifie><![CDATA[songsmgmt]]></identifie>
+		<version><![CDATA[1.0.0]]></version>
+		<type><![CDATA[other]]></type>
+		<ability><![CDATA[歌曲管理]]></ability>
+		<description><![CDATA[歌曲管理]]></description>
+		<author><![CDATA[GS]]></author>
+		<url><![CDATA[http://bbs.wormwood.sg]]></url>
+	</application>
+	
+	<platform>
+		<handles>
+			<message type="text" />
+		</handles>
+		<rule embed="true" />
+	</platform>
+	<bindings>
+	 <cover>
+        <entry title="songs入口设置" do="entrance" />
+    </cover>
+		
+		<menu>
+			<entry title="歌曲管理" do="songsList"/>
+			<entry title="已点歌曲管理" do="selectedSongs"/>
+		</menu>
+		
+	</bindings>
+	<install><![CDATA[
+	CREATE TABLE IF NOT EXISTS `ims_singer_songs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `singerid` int(10) DEFAULT NULL,
+  `title` varchar(100) DEFAULT '',
+  `status` tinyint(1) unsigned DEFAULT '1',
+  `displayorder` int(10) unsigned DEFAULT '0',
+  `price` varchar(10) DEFAULT '',
+  `memberprice` varchar(10) DEFAULT '',
+  `createtime` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+	
+	
+CREATE TABLE IF NOT EXISTS `ims_singer_selected_songs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `songsid` int(10) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `title` varchar(100) DEFAULT '',
+  `tables` varchar(10) DEFAULT '' COMMENT '桌号',
+  `remark` varchar(1000) NOT NULL DEFAULT '' COMMENT '备注',
+  `selectedby` varchar(100) DEFAULT '',
+  `payamount` varchar(10) DEFAULT NULL,
+  `status` tinyint(1) unsigned DEFAULT '1' COMMENT '1-普通客户，2-会员提交，3-已付款，4-已完成',
+  `createtime` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+	
+	]]></install>
+	<uninstall><![CDATA[]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+</manifest>
