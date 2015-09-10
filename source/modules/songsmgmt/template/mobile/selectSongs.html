@@ -57,7 +57,7 @@
 
         <script type="text/javascript">
 
-        
+        	var icount;
             function submit() {
             	
                 var ids = "";
@@ -73,39 +73,65 @@
                   });
                 
                 if (ids == '') {
-                    alert('Please Select a Song');
+                	alertMsg('Please Select a Song');
                     return;
                 }
                 
-                if(confirm("Confirm to Submit Selected Songs? ")){
+                confirmMsg("Confirm to Submit Selected Songs? ");
                 
-                $(".vote-btn").attr("disabled","true");
-                 $.ajax({
-                    url: "{php echo $this->createMobileUrl('submitSongs', array('id' => $id))}",
-                    data: {
-                        t: Math.random(),
-                        ids:ids 
-                    },
-                    beforeSend: function () {
-                       $(".vote-btn").attr("disabled","true");
-                    },
-                    success: function (data) {
-                    var dataObj=eval("("+data+")");
-                       if(data!=''){
-                           window.alert(dataObj.info);
-                           $(".vote-btn").removeAttr("disabled");
-                           return;
-                       }
+             	icount =setInterval(function(){
+                    
+                	  if(confirmbtn){
+                		  $(".vote-btn").attr("disabled","true");
+                          $.ajax({
+                             url: "{php echo $this->createMobileUrl('submitSongs', array('id' => $id))}",
+                             data: {
+                                 t: Math.random(),
+                                 ids:ids 
+                             },
+                             beforeSend: function () {
+                                $(".vote-btn").attr("disabled","true");
+                             },
+                             success: function (data) {
+                             var dataObj=eval("("+data+")");
+                                if(data!=''){
+                                	 $(".vote-btn").removeAttr("disabled");
+                                	alertSuccess(dataObj.info);
+                                	
+                                	var scount =setInterval(function(){
+                                		if(sucessbtn){
+                                			 clearInterval(icount);
+                                             confirmbtn=false;
+                                			 setTimeout(function(){
+                                					location.href="{php echo $this->createMobileUrl('entrance')}";
+                                                 
+                                             },500);
+                                		
+                                			
+                                		}
+                                	},500);
+                                	
+                                   
+                                }
+                                 
+                           
+                             },
+                             error: function () {
+                                 
+                             },
+                             timeout: 15000
+                         }); 
+                          clearInterval(icount);
+                          confirmbtn=false;
                         
-                  
-                    },
-                    error: function () {
-                        
-                    },
-                    timeout: 15000
-                }); 
-			 
-            	}
+                		}
+                	  
+                	  
+                	},500);
+             
+                	
+                	
+                		 
 
             }
         </script>

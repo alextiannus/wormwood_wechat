@@ -78,6 +78,38 @@ document.writeln("	font-size: 18px;");
 document.writeln("	padding:6px;");
 document.writeln("	margin:10px 0 0 0;");
 document.writeln("}");
+
+//confirm button
+document.writeln(".window .txtbtn2 {");
+document.writeln("	");
+document.writeln("	background: #f1f1f1;");
+document.writeln("	background-image: -webkit-gradient(linear, left top, left bottom, from( #DCDCDC ), to( #f1f1f1 )); \/* Saf4+, Chrome *\/");
+document.writeln("	background-image: -webkit-linear-gradient( #ffffff , #DCDCDC ); \/* Chrome 10+, Saf5.1+ *\/");
+document.writeln("	background-image:    -moz-linear-gradient( #ffffff , #DCDCDC ); \/* FF3.6 *\/");
+document.writeln("	background-image:     -ms-linear-gradient( #ffffff , #DCDCDC ); \/* IE10 *\/");
+document.writeln("	background-image:      -o-linear-gradient( #ffffff , #DCDCDC ); \/* Opera 11.10+ *\/");
+document.writeln("	background-image:         linear-gradient( #ffffff , #DCDCDC );");
+document.writeln("	border: 1px solid #CCCCCC;");
+document.writeln("	border-bottom: 1px solid #B4B4B4;");
+document.writeln("	color: #555555;");
+document.writeln("	font-weight: bold;");
+document.writeln("	text-shadow: 0 1px 0 #FFFFFF;");
+document.writeln("	border-radius: 0.6em 0.6em 0.6em 0.6em;");
+document.writeln("	display: block;");
+document.writeln("	width: 45%;");
+document.writeln("	float: left;");
+document.writeln("	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);");
+document.writeln("	text-overflow: ellipsis;");
+document.writeln("	white-space: nowrap;");
+document.writeln("	cursor: pointer;");
+document.writeln("	text-align: windowcenter;");
+document.writeln("	font-weight: bold;");
+document.writeln("	font-size: 18px;");
+document.writeln("	padding:6px;");
+document.writeln("	margin:10px 2px;");
+document.writeln("}");
+//confirm button end
+
 document.writeln(".window .txtbtn:visited {");
 document.writeln("	background-image: -webkit-gradient(linear, left top, left bottom, from( #ffffff ), to( #cccccc )); \/* Saf4+, Chrome *\/");
 document.writeln("	background-image: -webkit-linear-gradient( #ffffff , #cccccc ); \/* Chrome 10+, Saf5.1+ *\/");
@@ -121,6 +153,27 @@ document.writeln("	 <div id=\"txt\"><\/div>");
 document.writeln("	 <input type=\"button\" value=\"OK\" id=\"windowclosebutton\" name=\"OK\" class=\"txtbtn\">	");
 document.writeln("	<\/div>");
 document.writeln("<\/div>");
+
+document.writeln("<div class=\"window\" id=\"windowcenter2\">");
+document.writeln("	<div id=\"title\" class=\"title\">Message Alert<span class=\"close\" id=\"alertclose2\"><\/span><\/div>");
+document.writeln("	<div class=\"content\">");
+document.writeln("	 <div id=\"txt2\"><\/div>");
+document.writeln("	 <input type=\"button\" value=\"OK\" id=\"windowconfirmbutton1\" name=\"OK\" class=\"txtbtn2\">	");
+document.writeln("	 <input type=\"button\" value=\"Cancel\" id=\"windowclosebutton2\" name=\"Cancel\" class=\"txtbtn2\">	");
+document.writeln("	<\/div>");
+document.writeln("<\/div>");
+
+document.writeln("<div class=\"window\" id=\"windowcenter3\">");
+document.writeln("	<div id=\"title\" class=\"title\">Message Alert<span class=\"close\" id=\"alertclose3\"><\/span><\/div>");
+document.writeln("	<div class=\"content\">");
+document.writeln("	 <div id=\"txt3\"><\/div>");
+document.writeln("	 <input type=\"button\" value=\"OK\" id=\"windowclosebutton3\" name=\"OK\" class=\"txtbtn\">	");
+document.writeln("	<\/div>");
+document.writeln("<\/div>");
+
+var confirmbtn =false;
+var sucessbtn =false;
+
 $(document).ready(function () { 
 
 $("#windowclosebutton").click(function () { 
@@ -130,22 +183,58 @@ $("#alertclose").click(function () {
 $("#windowcenter").slideUp(500);
 }); 
 
+$("#windowclosebutton3").click(function () { 
+	sucessbtn=true;
+	$("#windowcenter3").slideUp(500);
+	
+	}); 
+
+$("#alertclose3").click(function () { 
+	sucessbtn=true;
+	$("#windowcenter3").slideUp(500);
+	}); 
+
+
+$("#windowconfirmbutton1").click(function () { 
+	confirmbtn=true;
+	$("#windowcenter2").slideUp(500);
+	}); 
+
+$("#windowclosebutton2").click(function () { 
+	confirmbtn=false;
+	clearInterval(icount);
+	$("#windowcenter2").slideUp(500);
+	}); 
+
+$("#alertclose2").click(function () { 
+	confirmbtn=false;
+	clearInterval(icount);
+	$("#windowcenter2").slideUp(500);
+	}); 
+
 }); 
-function alert(title){ 
-//var windowHeight; 
-//var windowWidth; 
-//var popWidth;  
-//var popHeight; 
-//windowHeight=$(window).height(); 
-//windowWidth=$(window).width(); 
-//popHeight=$(".window").height(); 
-//popWidth=$(".window").width(); 
-//var popY=(windowHeight-popHeight)/2; 
-//var popX=(windowWidth-popWidth)/2; 
-//$("#windowcenter").css("top",popY).css("left",popX).slideToggle("slow"); 
+
+
+function alertMsg(title){ 
+
 $("#windowcenter").slideToggle("slow"); 
 $("#txt").html(title);
-//$("#windowcenter").hide("slow"); 
-setTimeout('$("#windowcenter").slideUp(500)',8000);
+
+//setTimeout('$("#windowcenter").slideUp(500)',8000);
+} 
+
+function alertSuccess(title){ 
+
+	$("#windowcenter3").slideToggle("slow"); 
+	$("#txt3").html(title);
+
+	//setTimeout('$("#windowcenter").slideUp(500)',8000);
+	} 
+
+function confirmMsg(title){ 
+
+	$("#windowcenter2").slideToggle("slow"); 
+	$("#txt2").html(title);
+	
 } 
 

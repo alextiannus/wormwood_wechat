@@ -182,7 +182,7 @@ class SongsmgmtModuleSite extends WeModuleSite
     public function doMobilesubmitSongs()
     {
         global $_GPC, $_W;
-        checkauth();
+        
         $ids = $_GPC['ids'];
         if (empty($ids)) {
             die("Please select Songs");
@@ -297,7 +297,7 @@ class SongsmgmtModuleSite extends WeModuleSite
                 }
                 
                 echo json_encode(array(
-                    'info' => 'Your Payment Sucessfully,Our Singer Will Prepare to Sing The Songs. '
+                    'info' => 'Your order has been placed succesffully. Our Singer will present the song for you shortly.'
                 ));
             }
         } else {
@@ -329,9 +329,16 @@ class SongsmgmtModuleSite extends WeModuleSite
             }
             
             echo json_encode(array(
-                'info' => 'Your Payment Sucessfully,Our Singer Will Prepare to Sing The Songs. '
+                'info' => 'Your order has been placed succesffully. Our Singer will present the song for you shortly.'
             ));
         }
+    }
+    
+    public function doMobiletest1()
+    {
+        echo json_encode(array(
+            'info' => '11Your order has been placed succesffully. Our Singer will present the song for you shortly.'
+        ));
     }
 
     public function doMobileselectSongs()
@@ -347,6 +354,7 @@ class SongsmgmtModuleSite extends WeModuleSite
     public function doMobileEntrance()
     {
         global $_GPC, $_W;
+        checkauth();
         $condition = '';
         $list = pdo_fetchall("SELECT * FROM " . tablename('singer') . " WHERE weid = '{$_W['weid']}' $condition ORDER BY id");
         
