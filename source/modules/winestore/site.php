@@ -101,13 +101,16 @@ class WinestoreModuleSite extends WeModuleSite {
 		global $_W,$_GPC;
 		
 		$weid = $_GPC['weid'];
+		//$weid=5;
 		
 		$time = date('Y-m-d H:i:s',time());
 		$time1=time();
 		$fansid=$_W['fans']['from_user'];
+		//$fansid='dddaaaa11';
 		
 		$name = $this->getUserInfo($fansid);
 		$username = $name['nickname'];
+		//$username='test12345';
 		
 		
 		$status = pdo_fetch("select fansid from ".tablename('wine_store')." where 1=1 and fansid = :fansid and weid = :weid",array(':fansid'=>$fansid,':weid'=>$_W['weid']));	
@@ -133,15 +136,15 @@ class WinestoreModuleSite extends WeModuleSite {
 			}else{
 				
 			$jd['div'] = "
-            <br /></br></br><div id='deposit-card'>
+            </br></br><div id='deposit-card'>
             <ul>
                     <li>
-                        <p>Stock Card No. ：</p>
+                        <p>Card No. ：</p>
                         <p>{$rand}</p>
                     </li>
                     <li>
                         <p>Directions：</p>
-                        <p>Please go to the front desk, submit the stock card number for storing wine </p>
+                        <p>Please go to the front desk, submit the card number for storing wine </p>
                     </li>
                     <li>
                         <p>Status：</p>

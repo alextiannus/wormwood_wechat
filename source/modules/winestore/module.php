@@ -54,7 +54,9 @@ class WinestoreModule extends WeModule {
 				echo "window.location.href='$url'";  
 				echo "</script>"; 
 				}else{
+				    $url = $this->createWebUrl('wineStore');
 				echo "<script language='javascript' type='text/javascript'>alert('删除成功,该用户没有存酒!');"; 
+				echo "window.location.href='$url'";
 				echo "</script>"; 
 				}
 				
