@@ -1,0 +1,67 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Wine Storage</title>
+	<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1" />
+	<meta content="telephone=no" name="format-detection" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link rel="stylesheet" href="./source/modules/jdg_pub/template/css/reset.css" />
+	<link rel="stylesheet" href="./source/modules/jdg_pub/template/css/bar.css" />
+    <style type="text/css">
+        div#deposit-card {
+            margin-bottom:12px;
+        }
+
+    </style>
+</head>
+<body>
+
+	
+	<div id="content">
+		<div id="deposit-page">
+			<p>My Storage</p>
+                <a href="#" class="ui-button button-36 button-gray" style="color:#666;" id="deposit">Store Wine</a>
+            <br />
+				<div id="deposit-card">
+				<ul>
+					<li>
+						<p>Stock Card No. ：</p>
+						<p>{$result['snid']}</p>
+					</li>
+                    <li>
+                        <p>Directions:</p>
+                        <p>Please go to the front desk, submit the stock card number for storing wine.</p> 
+                    </li>
+                    <li>
+                        <p>Status ：</p>
+                        <p><span style='color:blue;'>{$result['status']}</span></p>
+                    </li>
+                    <li>
+                        <p>Submit Time：</p>
+                        <p>{$result['creattime']}</p>
+                    </li>                         
+				</ul>
+			</div>
+
+		</div>
+	</div>
+
+
+
+    
+    <script src="./source/modules/winestore/template/js/jquery-2.0.3.min.js"></script>
+	
+	<script type="text/javascript" src="./source/modules/winestore/template/js/bar.js"></script>
+
+<script>
+$(function () {
+    
+    $("#deposit").click(function () {
+        showToastInfo("Please go to the front desk to store wine");
+    });
+});
+</script>
+
+
+</body>
+</html>

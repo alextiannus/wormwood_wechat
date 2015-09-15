@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.we7.cc" versionCode="0.52">
+	<application setting="false">
+		<name><![CDATA[winestore]]></name>
+		<identifie><![CDATA[winestore]]></identifie>
+		<version><![CDATA[1.0]]></version>
+		<type><![CDATA[other]]></type>
+		<ability><![CDATA[winestore]]></ability>
+		<description><![CDATA[]]></description>
+		<author><![CDATA[WORMWOOD]]></author>
+		<url><![CDATA[http://bbs.wormwood.com]]></url>
+	</application>
+	<platform>
+		<handles>
+			<message type="text" />
+		</handles>
+		<rule embed="true" />
+	</platform>
+	<bindings>
+	 <cover>
+        <entry title="WineStorage入口设置" do="entrance" />
+    </cover>
+		<menu>
+			<entry title="存酒管理" do="wineStore"  />   
+		</menu>
+		
+	</bindings>
+
+	<install><![CDATA[
+
+CREATE TABLE IF NOT EXISTS `ims_wine_store` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `snid` varchar(110) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `creattime` int(110) DEFAULT NULL,
+  `weid` varchar(110) DEFAULT NULL,
+  `status` varchar(255) DEFAULT '0',
+  `fansid` varchar(110) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `ims_wine_store_list` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `snid` varchar(110) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `winename` varchar(255) DEFAULT NULL,
+  `winenumber` int(11) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `creattime` int(110) DEFAULT NULL,
+  `endtime` int(110) DEFAULT NULL,
+  `winenum` int(11) DEFAULT NULL,
+  `status` int(255) unsigned zerofill NOT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+
+
+
+
+    ]]></install>
+	<uninstall><![CDATA[
+
+    ]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+</manifest>
