@@ -42,9 +42,9 @@
 </ul>
 <div class="tab-content">
  	<div class="tab-pane active" id="search">
- 	<form action="{php echo $this->createWebUrl('searchList')}"   method="post">
+ 	<form action="{php echo $this->createWebUrl('wineCollectSearch')}"   method="post">
  	<div class="controls">
- 	   Request No. ： <input type="text" name="requestNo"  class="input-xlarge" >
+ 	  Card No. ： <input type="text" name="cardnumber"  class="input-xlarge" >
  	</div>
  	
  	<div class="controls text-center">
@@ -59,7 +59,7 @@
 
 <br/>
 <ul class="nav nav-tabs" role="tablist">
-  <li class="active"><a href="#home" role="tab" data-toggle="tab">Request List</a></li>
+  <li class="active"><a href="#home" role="tab" data-toggle="tab">Collect Request List</a></li>
   
 </ul>
 <!-- Tab panes -->
@@ -69,16 +69,17 @@
 							<div class="row-fluid">
 								
 								<div class="table-header">
-									Request List
+									Collect Request List
 								</div>
 
 								<table id="sample-table-2" class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
 											
-											<th>Request No.</th>
-											
-											
+											<th>Card No.</th>
+											<th>Wine Name</th>
+											<th>Collected By</th>
+											<th>Table/Room No.</th>
 
 											<th class="hidden-phone">
 												<i class="icon-time bigger-110 hidden-phone"></i>
@@ -98,19 +99,26 @@
 										<tr>
 
 											<td>
-												<a href="#">{$row['snid']}</a>
+												<a href="#">{$row['cardnumber']}</a>
 											</td>
-											<td >{$row['creattime']}</td>
-											
-
+											<td>
+												<a href="#">{$row['winename']}</a>
+											</td>
+											<td>
+												<a href="#">{$row['collectedby']}</a>
+											</td>
+											<td>
+												<a href="#">{$row['tablenumber']}</a>
+											</td>
+											<td >{$row['creattime']}</td>		
 											<td >
 												<span >{$row["status"]}</span>
 											</td>
 
 											<td >
-												
-												<a href="{php echo create_url('site/module', array('do' => 'update', 'name' => 'winestore','snid'=>$row['snid'],'id'=>$row['id']))}"><button type="button" class="btn btn-success">Store New Wine</button></a>
-												<a href="{php echo create_url('site/module', array('do' => 'select', 'name' => 'winestore','snid'=>$row['snid'],'id'=>$row['id']))}"><button type="button" class="btn btn-info">Details</button></a>
+												{if $row['status'] != "Done"}
+												<a href="{php echo create_url('site/module', array('do' => 'updateCollect', 'name' => 'winestore','collectedby'=>$row['collectedby'],'cardnumber'=>$row['cardnumber'],'id'=>$row['id']))}"><button type="button" class="btn btn-success">Confirm Collected</button></a>
+												{/if}
 												<a onclick="return confirm('You Will Delete All The Data Of This Record?');return false;" href="{php echo create_url('site/module', array('do' => 'delete', 'name' => 'winestore','snid'=>$row['snid'],'id'=>$row['id']))}"><button type="button" class="btn btn-danger">Delete</button></a>
 												
 											</td>

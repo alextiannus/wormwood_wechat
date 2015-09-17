@@ -18,7 +18,7 @@
 
 			function addinput(){
 				
-				var content ='</br></br><div class="controls">请选择酒的种类：<select name="type[]"><option value ="1" selected="selected">红酒</option><option value ="2">香槟</option><option value ="3">洋酒</option><option value ="4">啤酒</option></select></div></br>  <div class="controls">请填写名称： <input type="text" name="winename[]" placeholder="请填写酒名" class="input-xlarge"></div></br><div class="controls">请填写数量： <input type="text"  name="winenumber[]" placeholder="数量" class="input-xlarge"></div></br>   <div class="controls">存放柜号： <input type="text"  name="winenum[]" placeholder="请填写存放柜号" class="input-xlarge"></div></br><div class="controls">备注： <input type="text"  name="remark[]" class="input-xlarge" /></div></br>';
+				var content ='</br></br><div class="controls">请选择酒的种类：<select name="type[]"><option value ="1" selected="selected">红酒</option><option value ="2">香槟</option><option value ="3">洋酒</option><option value ="4">啤酒</option></select></div></br>  <div class="controls">请填写名称： <input type="text" name="winename[]" placeholder="请填写酒名" class="input-xlarge"></div></br><div class="controls">请选择酒剩余量<select name="amount[]"><option value ="100" selected="selected">100%</option><option value ="80" selected="selected">80%</option><option value ="60" selected="selected">60%</option><option value ="50" selected="selected">50%</option><option value ="30" selected="selected">30%</option><option value ="10" selected="selected">10%</option></select></div></br><div class="controls">存酒数量： &nbsp;1 <input type="hidden"  name="winenumber[]" placeholder="数量" class="input-xlarge" value=1></div></br>   <div class="controls">存放柜号： <input type="text"  name="winenum[]" placeholder="请填写存放柜号" class="input-xlarge"></div></br><div class="controls">备注： <input type="text"  name="remark[]" class="input-xlarge" /></div></br>';
   				$(".controls").eq(-2).append(content);
 			}
 
@@ -65,8 +65,23 @@
 				    </div>
 				    </br>
 				    
+				    <div class="controls">请选择酒剩余量：
+        				  <select name="amount[]">
+          					 <option value ="100" selected="selected">100%</option>
+          					 <option value ="80" selected="selected">80%</option>
+          					 <option value ="60" selected="selected">60%</option>
+          					 <option value ="50" selected="selected">50%</option>
+          					 <option value ="30" selected="selected">30%</option>
+          					 <option value ="10" selected="selected">10%</option>
+          					
+           
+        				  </select>
+             		</div>
+             		</br>
+				    
 				   <div class="controls">
-				           请填写数量： <input type="text"  name="winenumber[]" placeholder="数量" class="input-xlarge">
+				           存酒数量：&nbsp;1
+				     <input type="hidden"  name="winenumber[]" placeholder="数量" class="input-xlarge" value=1>
             		</div>
             		</br>
             

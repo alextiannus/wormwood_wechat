@@ -51,9 +51,22 @@
 				            请填写酒名： <input type="text" name="winename"  class="input-xlarge" value="{$result['winename']}">
 				    </div>
 				    </br>
+				    <div class="controls">请选择酒剩余量：
+        				  <select name="amount">
+          					 <option value ="100" {if $result['amount'] == 100 }selected="selected" {/if}>100%</option>
+          					 <option value ="80" {if $result['amount'] == 80 }selected="selected" {/if}>80%</option>
+          					 <option value ="60" {if $result['amount'] == 60 }selected="selected" {/if}>60%</option>
+          					 <option value ="50" {if $result['amount'] == 50 }selected="selected" {/if}>50%</option>
+          					 <option value ="30" {if $result['amount'] ==30 }selected="selected" {/if}>30%</option>
+          					 <option value ="10" {if $result['amount'] == 10 }selected="selected" {/if}>10%</option>
+          					
+           
+        				  </select>
+             		</div>
+             		</br>
 				    
 				   <div class="controls">
-				           请填写数量： <input type="text"  name="winenumber"  class="input-xlarge" value="{$result['winenumber']}">
+				           存酒数量：&nbsp;1 <input type="hidden"  name="winenumber"  class="input-xlarge" value="{$result['winenumber']}">
             		</div>
             		</br>
             
@@ -70,6 +83,7 @@
              	
 			          <div class="controls">
 			            <input type="submit" class="btn btn-primary" value="保存" >
+			            <a href="{php echo create_url('site/module', array('do' => 'select', 'name' => 'winestore','snid'=>$result['snid'],'id'=>$result['id']))}"><button type="button" class="btn btn-info">返回</button></a>
 			          </div>
 
           </form>

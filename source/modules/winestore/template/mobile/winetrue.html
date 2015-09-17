@@ -20,17 +20,17 @@
 	<div id="content">
 		<div id="deposit-page">
 			<p>My Storage</p>
-                <a href="#" class="ui-button button-36 button-gray" style="color:#666;" id="deposit">Store Wine</a>
-            <br />
+                <a href="#" class="ui-button button-36 button-orange"  id="deposit">Show Storage List</a>
+            <br/>
 				<div id="deposit-card">
 				<ul>
 					<li>
-						<p>Card No. ：</p>
+						<p>Request No. ：</p>
 						<p>{$result['snid']}</p>
 					</li>
                     <li>
                         <p>Directions:</p>
-                        <p>Please go to the front desk, submit the card number for storing wine.</p> 
+                        <p>Please go to the front desk, submit the request number for storing wine.</p> 
                     </li>
                     <li>
                         <p>Status ：</p>
@@ -57,7 +57,10 @@
 $(function () {
     
     $("#deposit").click(function () {
-        showToastInfo("Please go to the front desk to store wine");
+    	
+    	var httpurl ="{php echo $this->createMobileUrl('wineList', array('snid' =>$result['snid']))}";
+
+		window.location.href=httpurl;
     });
 });
 </script>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="format-detection" content="telephone=no">
+		<meta http-equiv="Cache-Control" content="no-cache"> 
+        <title>Wine List</title>
+       <script src="./source/modules/winestore/template/js/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="./source/modules/winestore/template/js/alert.js"></script>
+        <style>
+        *{margin:0;padding:0;}
+		body {font-family: Microsoft YaHei,Helvitica,Verdana,Tohoma,Arial,san-serif;background-color:black;}
+		html,body {height: 100%;}
+        .wrapper {position: relative;margin: 0 auto;max-width: 640px;min-height: 100%;color:#fff;}
+        .title {font-size: 20px;padding: 10px 18px 0px;}
+		.bg{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		z-index: -1;
+		height: 100%;
+		}
+		.option-cont .option {
+		padding-bottom: 10px;
+		line-height: 30px;
+		font-size: 11px;
+		width: 47.6%;
+		float: left;
+		background: #1c2c43;
+		border: #223a5c solid 1px;
+		-webkit-box-sizing: border-box;
+		margin: 0 0 1.5% 1.5%;
+		position: relative;
+		min-height: 50px;
+		}
+		.vote-cont .vote-btn {
+		width: 95%;
+		margin: 0 auto;
+		display: block;
+		width: 95%;
+		height:60px;
+		background-color:green;
+		color:white;
+		font-size:22px;
+		border-radius:8px;
+		border: 0;
+		}
+		.smallTi{
+		font-size:14px;
+		color:green;
+		}
+		.ckbox{
+		float:right;
+		margin-right:20px;
+		margin-top: 10px
+		}
+		
+		
+        </style>
+
+        <script type="text/javascript">
+        
+
+        	var icount;
+            function submit() {
+            	
+                var ids = "";
+                
+                $("input[class='ckbox']").each(function(i){
+                    if($(this).is(':checked')){
+                    	 if (ids != "") {
+                             ids += ",";
+                         }
+                         ids += $(this).val();	
+                    }
+
+                  });
+                
+                if (ids == '') {
+                	alertMsg('Please Select a Wine');
+                    return;
+                }
+                
+                confirmMsg("Confirm to Submit Selected Wines? ");
+                
+             	icount =setInterval(function(){
+                    
+                	  if(confirmbtn){
+                		  $(".vote-btn").attr("disabled","true");
+                          clearInterval(icount);
+                          confirmbtn=false;
+                          location.href="{php echo $this->createMobileUrl('collectWineList')}"+"&ids="+ids;
+                		}
+                	  
+                	  
+                	},500);
+             
+            }
+            
+        </script>
+    </head>
+    <body>
+        <div class="wrapper" style="margin-top:-8px;">
+            <img class="bg" src="./source/modules/songsmgmt/style/images/bg.jpg">
+        
+                <div>
+
+                </div>
+          
+                <div class="option-cont">
+                    {loop $result $row}
+                    <div class="option">
+                     <div>Card No.: {$row['cardnumber']} </div>
+                     <div>
+                     <div >
+                     Wine Name: 
+                     </div>
+                     <div class="smallTi">
+                    {$row['winename']} 
+                     </div>
+                    
+                     <input type="checkbox" class="ckbox" value="{$row['id']}">
+                     </div>
+                    </div>
+                    
+                    {/loop}
+                </div>
+
+                <div class="vote-cont" style="bottom: 0;position: fixed;width:100%">
+                <button class="vote-btn" onclick="submit();">Collect</button>
+              
+                </div>
+         
+
+          
+        </div>
+
+	
+    </body>
+</html>
