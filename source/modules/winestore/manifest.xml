@@ -39,23 +39,37 @@ CREATE TABLE IF NOT EXISTS `ims_wine_store` (
   `status` varchar(255) DEFAULT '0',
   `fansid` varchar(110) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE IF NOT EXISTS `ims_wine_store_list` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `snid` varchar(110) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
+  `cardnumber` varchar(110) DEFAULT NULL,
   `winename` varchar(255) DEFAULT NULL,
   `winenumber` int(11) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
+  `amount` int(11) DEFAULT NULL,
   `creattime` int(110) DEFAULT NULL,
   `endtime` int(110) DEFAULT NULL,
   `winenum` int(11) DEFAULT NULL,
+  `collectedby` varchar(255) DEFAULT NULL,
   `status` int(255) unsigned zerofill NOT NULL,
   `remark` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE IF NOT EXISTS `ims_wine_retrieve_list` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cardnumber` varchar(110) DEFAULT NULL,
+  `winename` varchar(255) DEFAULT NULL,
+  `collectedby` varchar(255) DEFAULT NULL,
+  `tablenumber` varchar(255) DEFAULT NULL,
+  `creattime` int(110) DEFAULT NULL,
+  `status` int(255) unsigned zerofill NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 
 
