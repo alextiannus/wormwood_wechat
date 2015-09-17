@@ -7,35 +7,156 @@
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<link rel="stylesheet" href="./source/modules/winestore/template/css/reset.css" />
 	<link rel="stylesheet" href="./source/modules/winestore/template/css/bar.css" />
+	  <script src="./source/modules/winestore/template/js/jquery-2.0.3.min.js"></script>
+	 <script type="text/javascript" src="./source/modules/winestore/template/js/alert2.js"></script>
+	 
     <style type="text/css">
         div#deposit-card {
-            margin-bottom:12px;
+            margin-bottom:10px;
         }
-
+        .wrapper {
+        position: relative;
+        margin: 0 auto;
+        max-width: 640px;
+        min-height: 100%;
+        color:#fff;
+		}
+		.option {
+		padding-bottom: 10px;
+		line-height: 30px;
+		font-size: 11px;
+		width: 100%;
+		float: left;
+		background: #1c2c43;
+		border: #223a5c solid 1px;
+		-webkit-box-sizing: border-box;
+		margin: 0 0 1.5% 1.5%;
+		position: relative;
+		min-height: 50px;
+		border-radius: 10px;
+		}
+		
+		.smallTi{
+		font-size:14px;
+		color:green;
+		}
+		.ckbox{
+		float:right;
+		margin-right:20px;
+		margin-top: 10px
+		}
     </style>
+    <script type="text/javascript">
+        
+
+        	var icount;
+            function submit() {
+            	
+                var ids = "";
+                
+                $("input[class='ckbox']").each(function(i){
+                    if($(this).is(':checked')){
+                    	 if (ids != "") {
+                             ids += ",";
+                         }
+                         ids += $(this).val();	
+                    }
+
+                  });
+                
+                if (ids == '') {
+                	showToastInfo("Please Select a Wine");
+                    return;
+                }
+                
+              $(".vote-btn").attr("disabled","true");
+
+              location.href="{php echo $this->createMobileUrl('collectWineList')}"+"&ids="+ids;
+                		
+             
+            }
+            
+        </script>
 </head>
 <body>
 	
-	<div id="content">
 		<div id="deposit-page">
 			<p>My Storage</p>
 			
-                <a href="#" class="ui-button button-36 button-orange" id="deposit-wine">Store Wine</a>
-            <br/>
+            <a href="#" class="ui-button button-36 button-orange" id="deposit-wine">Store Wine</a>
+                
             
+            {if !empty($result) }
+            </br>
+           
+            <div id="deposit-card">
+				<ul>
+					<li>
+						<p>Request No. ：</p>
+						<p>{$result['snid']}</p>
+					</li>
+                    <li>
+                        <p>Directions:</p>
+                        <p>Please go to the front desk, submit the request number for storing wine.</p> 
+                    </li>
+                    <li>
+                        <p>Status ：</p>
+                        <p><span style='color:orange;'>{$result['status']}</span></p>
+                    </li>
+                    <li>
+                        <p>Submit Time：</p>
+                        <p>{$result['creattime']}</p>
+                    </li>                         
+				</ul>
+			</div>
+            {/if}
             
+            </br>
+             {if !empty($storeList) }
+         	 <div class="wrapper" >
+	
+                <div>
+                    {loop $storeList $row}
+                    <div class="option">
+                     <div>Card No.: {$row['cardnumber']} </div>
+                     <div>
+                     <div>
+                     Wine Name: &nbsp;<span class="smallTi"> {$row['winename']}</span>
+                     </div>
+                   
+                      <div>
+                     Wine Amount: &nbsp;<span class="smallTi"> {$row['amount']}</span>
+                     </div>
+                      <div>
+                     Store Time: &nbsp;<span class="smallTi"> {$row['creattime']}</span>
+                     </div>
+                      <div>
+                     Expire Time: &nbsp;<span class="smallTi"> {$row['endtime']}</span>
+                     </div>
+                    
+                     <input type="checkbox" class="ckbox" value="{$row['id']}">
+                     </div>
+                    </div>
+                    
+                    {/loop}
+                   
+                </div> 
+                <div style="clear:both"></div>
+                <div>
+           			 <a href="javascript:void(0)" class="ui-button button-36 button-orange" style="margin-top:0px"  onclick="submit();">Collect</a>
+          		</div>
 
+       		 </div>
+           
+            {/if}
 		</div>
-	</div>
-
+	
+		
     <input type="hidden" id="uid" name="uid" value="oM0mfjoiJSDuPFkTMDWlws0mC64g"  />
     <input type="hidden" id="oid" name="oid" value="gh_e5f739c3f550" />
 
-	
-    
-    <script src="./source/modules/winestore/template/js/jquery-2.0.3.min.js"></script>
-	<script type="text/javascript" src="./source/modules/winestore/template/js/bar.js"></script>
 
+<script type="text/javascript" src="./source/modules/winestore/template/js/bar.js"></script>
 <script>
 $(function () {
     
@@ -54,14 +175,13 @@ $(function () {
           
         	
            if (jd.IsSuccess) {
-                showToastInfo("Submit Request Successfully！");
+        	   showToastInfo("Submit Request Successfully！");
                 $("#deposit-wine").after(jd.div);
                 
-                $("#deposit-wine").remove();
-            
-
+            }else if(jd.IsStored){
+            	showToastInfo("You Have Already Submitted The Request");
             } else {
-                showToastInfo("Error,Please Contact us to Store Wine.");
+            	showToastInfo("Error,Please Contact us to Store Wine.");
             }
             
         });
@@ -69,7 +189,6 @@ $(function () {
 
 });
 </script>
-
 
 </body>
  	</html>

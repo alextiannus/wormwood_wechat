@@ -8,9 +8,8 @@
 defined('IN_IA') or exit('Access Denied');
 
 class WinestoreModule extends WeModule {
-	public $table = "idg_pub_wineadmin";
 
-	
+	//进入request page
 	public function doRequestList(){
 		global $_W,$_GPC;
 		$weid = $_W["weid"];
@@ -18,6 +17,7 @@ class WinestoreModule extends WeModule {
 		include $this->template("wineadmin");
 	}
 	
+	//request page 查询button
 	public function doSearchList(){
 	    global $_W,$_GPC;
 	    $weid = $_W["weid"];
@@ -26,14 +26,16 @@ class WinestoreModule extends WeModule {
 	    include $this->template("wineadmin");
 	}
 	
+	//进入request page 进入details page
 	public function doselect(){
 		global $_GPC;
 		$snid = $_GPC['snid'];
-		$result = pdo_fetchall("select id,snid,cardnumber,(CASE type when 1 then '红酒' when 2 then '香槟' when 3 then '洋酒'  else '啤酒'end)type,amount,winename,winenumber,winenum,FROM_UNIXTIME(creattime)creattime,FROM_UNIXTIME(endtime)endtime,collectedby,(case status when 0 then '未取' when 2 then '待取' else '已取'end)status,remark from ims_wine_store_list where 1=1 and snid={$snid}");
+		$result = pdo_fetchall("select id,snid,cardnumber,(CASE type when 1 then '红酒' when 2 then '香槟' when 3 then '洋酒'  else '啤酒'end)type,amount,winename,winenumber,winenum,FROM_UNIXTIME(creattime)creattime,FROM_UNIXTIME(endtime)endtime,collectedby,FROM_UNIXTIME(collecttime)collecttime,(case status when 0 then '未取' when 2 then '待取' else '已取'end)status,remark from ims_wine_store_list where 1=1 and snid={$snid}");
 		include $this->template("select");
 	}
 	
-	public function doupdate(){
+	////进入request page 进入add wine page.
+	public function doToAdd(){
 		global $_W,$_GPC;
 		$name = $_GPC['name'];
 		$snid = $_GPC['snid'];
@@ -49,7 +51,7 @@ class WinestoreModule extends WeModule {
 		}
 		
 	}
-	
+	//request page 删除button所有记录
 	public  function dodelete(){
 			global $_GPC;
 			$snid = $_GPC['snid'];
@@ -74,7 +76,7 @@ class WinestoreModule extends WeModule {
 			}
 		
 	}
-	
+	//进入request page 添加wine Confirm
 	public function doAddwine(){
 		global $_W,$_GPC;
 		$arr_num =  count($_GPC['winename']);
@@ -87,7 +89,7 @@ class WinestoreModule extends WeModule {
 		$name = $_GPC['name'];
 		$amount = $_GPC['amount'];
 		$time = time();
-	
+	    $endtime = time() + (30 * 24 * 60 * 60); //after 30days
 		for($i=0;$i<$arr_num;$i++){
 		  
 		    while (true) {
@@ -106,6 +108,7 @@ class WinestoreModule extends WeModule {
 		        'winenumber' => $winenumber[$i],
 		        'winenum' =>$winenum[$i],
 		        'creattime' =>$time,
+		        'endtime' =>$endtime,
 		        'type' => $type[$i],
 		        'amount' => $amount[$i],
 		        'remark' => $remark[$i]
@@ -134,7 +137,7 @@ class WinestoreModule extends WeModule {
 		}
 	}
 }
-
+        //request page details page 编辑wine
     public function doEditWine(){
         global $_W,$_GPC;
         $id=$_GPC['id'];
@@ -142,6 +145,7 @@ class WinestoreModule extends WeModule {
         include $this->template("editWine");
     }
     
+    //request page details page 编辑wine confirm
     public function doSaveWine(){
         global $_W,$_GPC;
         $id=$_GPC['id'];
@@ -175,7 +179,7 @@ class WinestoreModule extends WeModule {
         include $this->template("retrieveWine");
     }
 
-//更新取酒信息
+    //更新取酒信息
 	public function doUpdateStatus(){
 		global $_W,$_GPC;
 		$id=$_GPC['id'];
@@ -183,7 +187,7 @@ class WinestoreModule extends WeModule {
 		$collectedby=$_GPC['collectedby'];
 		$remark=$_GPC['remark'];
 		$time = time();
-		$status = pdo_query("update ims_wine_store_list set status=1 ,endtime={$time},collectedby='{$collectedby}',remark='{$remark}' where 1=1 and id={$id}");
+		$status = pdo_query("update ims_wine_store_list set status=1 ,collecttime={$time},collectedby='{$collectedby}',remark='{$remark}' where 1=1 and id={$id}");
 		if($status==FALSE){
 			echo "<script language='javascript' type='text/javascript'>alert('Error,Please Try Again!');"; 
 			echo "</script>";
@@ -196,6 +200,7 @@ class WinestoreModule extends WeModule {
 		}
 	}
 	
+	//details page 删除酒记录
 	public function dodeletejt(){
 		global $_W,$_GPC;
 		$id=$_GPC['id'];
@@ -213,13 +218,13 @@ class WinestoreModule extends WeModule {
 		}
 	}
 	
-	
+	//进入request collect page
 	public function doWineCollectList(){
 	    global $_W,$_GPC;
 	    $res = pdo_fetchall("select id,cardnumber,winename,collectedby,tablenumber,FROM_UNIXTIME(creattime)creattime,(CASE  status when 0 then 'Pending' else 'Done'end)status from ims_wine_retrieve_list where 1=1 ");
 	    include $this->template("collectList");
 	}
-	
+	//request collect page search 
 	public function doWineCollectSearch(){
 	    global $_W,$_GPC;
 	    $cardnumber=$_GPC['cardnumber'];
@@ -227,17 +232,18 @@ class WinestoreModule extends WeModule {
 	    include $this->template("collectList");
 	}
 	
+	//request collect page 更新取酒信息
 	public function doUpdateCollect(){
 	    global $_W,$_GPC;
 	    $cardnumber=$_GPC['cardnumber'];
 	    $collectedby=$_GPC['collectedby'];
-	    
+	    $time = time();
 	    $status = pdo_query("update ims_wine_retrieve_list set status=1  where 1=1 and cardnumber='{$cardnumber}' ");
 	    if($status==FALSE){
 	        echo "<script language='javascript' type='text/javascript'>alert('Error,Please Try Again!');";
 	        echo "</script>";
 	    }else{
-	        $status = pdo_query("update ims_wine_store_list set status=1 ,collectedby='{$collectedby}' where 1=1 and cardnumber='{$cardnumber}' ");
+	        $status = pdo_query("update ims_wine_store_list set status=1 ,collectedby='{$collectedby}',collecttime={$time} where 1=1 and cardnumber='{$cardnumber}' ");
 	        if($status==FALSE){
 	            echo "<script language='javascript' type='text/javascript'>alert('Error Update wine_store_list ,Please Try Again!');";
 	            echo "</script>";
@@ -254,12 +260,13 @@ class WinestoreModule extends WeModule {
 	    }
 	}
 	
+	//进取存酒信息
 	public function doWineStorageList(){
 	    global $_W,$_GPC;
-	   	$result = pdo_fetchall("select id,snid,cardnumber,(CASE type when 1 then '红酒' when 2 then '香槟' when 3 then '洋酒'  else '啤酒'end)type,amount,winename,winenumber,winenum,FROM_UNIXTIME(creattime)creattime,FROM_UNIXTIME(endtime)endtime,collectedby,(case status when 0 then '未取' when 2 then '待取' else '已取'end)status,remark from ims_wine_store_list where 1=1 ");
+	   	$result = pdo_fetchall("select id,snid,cardnumber,(CASE type when 1 then '红酒' when 2 then '香槟' when 3 then '洋酒'  else '啤酒'end)type,amount,winename,winenumber,winenum,FROM_UNIXTIME(creattime)creattime,FROM_UNIXTIME(endtime)endtime,collectedby,FROM_UNIXTIME(collecttime)collecttime,(case status when 0 then '未取' when 2 then '待取' else '已取'end)status,remark from ims_wine_store_list where 1=1 ");
 	    include $this->template("storageList");
 	}
-	
+	//进取存酒信息 查询
 	public function doWineStorageSearch(){
 	    global $_W,$_GPC;
 	    $cardnumber=$_GPC['cardnumber'];

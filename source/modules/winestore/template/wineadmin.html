@@ -109,7 +109,7 @@
 
 											<td >
 												
-												<a href="{php echo create_url('site/module', array('do' => 'update', 'name' => 'winestore','snid'=>$row['snid'],'id'=>$row['id']))}"><button type="button" class="btn btn-success">Store New Wine</button></a>
+												<a href="{php echo create_url('site/module', array('do' => 'toAdd', 'name' => 'winestore','snid'=>$row['snid'],'id'=>$row['id']))}"><button type="button" class="btn btn-success">Store New Wine</button></a>
 												<a href="{php echo create_url('site/module', array('do' => 'select', 'name' => 'winestore','snid'=>$row['snid'],'id'=>$row['id']))}"><button type="button" class="btn btn-info">Details</button></a>
 												<a onclick="return confirm('You Will Delete All The Data Of This Record?');return false;" href="{php echo create_url('site/module', array('do' => 'delete', 'name' => 'winestore','snid'=>$row['snid'],'id'=>$row['id']))}"><button type="button" class="btn btn-danger">Delete</button></a>
 												

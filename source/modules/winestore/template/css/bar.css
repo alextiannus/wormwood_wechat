@@ -1043,7 +1043,7 @@ a.ui-button.button-gray{
 }
 
 #deposit-card{
-	background-color: #ccc;
+	background-color: #1c2c43;
 	border-radius: 6px;
 	padding: 20px;
 }
@@ -1057,7 +1057,7 @@ a.ui-button.button-gray{
 
 #deposit-card ul li p{
 	font-size: 16px;
-	color: #333;
+	color: white;
 	line-height: 1.4;
 	padding-bottom: 2px;
 }
@@ -1071,16 +1071,11 @@ a.ui-button.button-gray{
 	-webkit-box-flex: 1;
 	box-flex: 1;
 	border-bottom: 1px dotted #a0a0a0;
-	color: #000;
+	color: white;
 	padding-left: 6px;
 }
 
-#deposit-rule{
-	margin-top: 20px;
-	color: #cc6666;
-	font-size: 14px;
-	line-height: 1.5;
-}
+
 
 article{
 }

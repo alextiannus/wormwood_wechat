@@ -62,9 +62,13 @@
 												<i class="icon-time bigger-110 hidden-phone"></i>
 												寄存时间
 											</th>
+											<th class="hidden-phone">
+												<i class="icon-time bigger-110 hidden-phone"></i>
+												过期时间
+											</th>
 											
-											<th>取出时间</th>
 											<th>取出人</th>
+											<th>取出时间</th>
 											<th class="hidden-480">状态</th>
 											<th>备注</th>
 											
@@ -92,6 +96,7 @@
 											
 											<td>{$row["endtime"]}</td>
 											<td>{$row['collectedby']}</td>
+											<td>{$row['collecttime']}</td>
 											<td>{$row['status']}</td>
 											<td>{$row['remark']}</td>
 											

@@ -88,40 +88,65 @@ class WinestoreModuleSite extends WeModuleSite
         // exit ();
         // }
         
-        $fansid = $_W['fans']['from_user'];
-        $status = pdo_fetch("select fansid from " . tablename('wine_store') . "where 1=1 and fansid = '{$fansid}'");
+         $fansid = $_W['fans']['from_user'];
+        //$fansid = "fromUser";
+        $status = pdo_fetch("select snid,fansid from " . tablename('wine_store') . "where 1=1  and fansid = '{$fansid}'");
         
         if (! empty($status)) {
-            $result = pdo_fetch("select snid,FROM_UNIXTIME(creattime)creattime,(CASE  status when 0 then 'No stock ' else 'Finish' end)status from" . tablename('wine_store') . "where 1=1 and fansid='{$fansid}'");
+            $result = pdo_fetch("select snid,FROM_UNIXTIME(creattime)creattime,(CASE  status when 0 then 'No stock ' else 'Finish' end)status from" . tablename('wine_store') . "where 1=1 and status=0 and fansid='{$fansid}'");
             
-            include $this->template('winetrue');
-        } else {
-            include $this->template('wine');
+            $snid = pdo_fetchall("select snid from" . tablename('wine_store') . "where 1=1 and status=1 and fansid='{$fansid}'");
+            
+            if (! empty($snid)) {
+                
+                $arrlength = count($snid);
+                
+                $where = "";
+                
+                for ($i = 0; $i < $arrlength; $i ++) {
+                    
+                    if ($arrlength == 1) {
+                        $where .= " AND snid='{$snid[$i]["snid"]}'";
+                    } else {
+                        if ($i == $arrlength - 1) {
+                            $where .= "OR snid='{$snid[$i]["snid"]}')";
+                        } else 
+                            if ($i == 0) {
+                                $where .= " AND (snid='{$snid[$i]["snid"]}'";
+                            } else {
+                                $where .= " OR snid='{$snid[$i]["snid"]}'";
+                            }
+                    }
+                }
+                
+                $storeList = pdo_fetchall("select id,snid,cardnumber,amount,winename,winenumber,winenum,FROM_UNIXTIME(creattime)creattime,FROM_UNIXTIME(endtime)endtime,collectedby,FROM_UNIXTIME(collecttime)collecttime,remark from ims_wine_store_list where 1=1 and status=0  $where");
+            }
         }
+        include $this->template('wine');
     }
 
     public function doMobileStore()
     {
         global $_W, $_GPC;
         
-        $weid = $_GPC['weid'];
-        // $weid=5;
+         $weid = $_GPC['weid'];
+        //$weid = 5;
         
         $time = date('Y-m-d H:i:s', time());
         $time1 = time();
         $fansid = $_W['fans']['from_user'];
-        // $fansid='dddaaaa11';
+        //$fansid = '123';
         
         $name = $this->getUserInfo($fansid);
         $username = $name['nickname'];
-        // $username='test12345';
+        //$username = 'test12345';
         
-        $status = pdo_fetch("select fansid from " . tablename('wine_store') . " where 1=1 and fansid = :fansid and weid = :weid", array(
+        $status = pdo_fetch("select fansid from " . tablename('wine_store') . " where 1=1 and status=0 and fansid = :fansid and weid = :weid", array(
             ':fansid' => $fansid,
             ':weid' => $_W['weid']
         ));
         if (! empty($status)) {
-            $jd['IsSuccess'] = false;
+            $jd['IsStored'] = true;
             echo json_encode($jd);
             exit();
         }
@@ -155,7 +180,7 @@ class WinestoreModuleSite extends WeModuleSite
                     </li>
                     <li>
                         <p>Status：</p>
-                        <p><span style='color:blue;'>Waiting for the stock</span></p>
+                        <p><span style='color:orange;'>Waiting for the stock</span></p>
                     </li>
                     <li>
                         <p>Submit Time：</p>
@@ -208,32 +233,32 @@ class WinestoreModuleSite extends WeModuleSite
         
         foreach ($list_ids as $item_id) {
             
-                $result = pdo_fetch("select * from" . tablename('wine_store_list') . "where 1=1 and status=0 and id='{$item_id}'");
-                
-                if(empty($result)){
-                    echo json_encode(array(
-                        'info' => 'You Have Already Submitted.'
-                    ));
-                    exit();
-                }
-                $updatestatus = pdo_query("update ims_wine_store_list set status=2 where 1=1 and id={$item_id}");
-                
-                $data = array(
-                    'cardnumber' => $result['cardnumber'],
-                    'winename' => $result['winename'],
-                    'collectedby' => $collectedby,
-                    'tablenumber' => $tablenumber,
-                    'creattime' => $time1
-                );
-                
-                $status = pdo_insert('wine_retrieve_list', $data);
-                
-                if ($status == FALSE) {
-                    echo json_encode(array(
-                        'info' => 'System Error.'
-                    ));
-                    exit();
-                }
+            $result = pdo_fetch("select * from" . tablename('wine_store_list') . "where 1=1 and status=0 and id='{$item_id}'");
+            
+            if (empty($result)) {
+                echo json_encode(array(
+                    'info' => 'You Have Already Submitted.'
+                ));
+                exit();
+            }
+            $updatestatus = pdo_query("update ims_wine_store_list set status=2 where 1=1 and id={$item_id}");
+            
+            $data = array(
+                'cardnumber' => $result['cardnumber'],
+                'winename' => $result['winename'],
+                'collectedby' => $collectedby,
+                'tablenumber' => $tablenumber,
+                'creattime' => $time1
+            );
+            
+            $status = pdo_insert('wine_retrieve_list', $data);
+            
+            if ($status == FALSE) {
+                echo json_encode(array(
+                    'info' => 'System Error.'
+                ));
+                exit();
+            }
         }
         
         echo json_encode(array(
