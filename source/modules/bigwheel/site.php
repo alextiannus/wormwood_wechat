@@ -27,11 +27,11 @@ class BigwheelModuleSite extends WeModuleSite {
         $id = intval($_GPC['id']);
   
         if (empty($id)) {
-            message('抱歉，参数错误！', '', 'error');
+            message('Sorry,Prameters Error！', '', 'error');
         }
         $reply = pdo_fetch("SELECT * FROM " . tablename($this->tablename) . " WHERE rid = :rid ORDER BY `id` DESC", array(':rid' => $id));
         if ($reply == false) {
-            message('抱歉，活动已经结束，下次再来吧！', '', 'error');
+            message('Sorry，The Game is Over！', '', 'error');
         }
 
         //获得关键词
@@ -48,7 +48,7 @@ class BigwheelModuleSite extends WeModuleSite {
             //message('抱歉，参数错误！','', 'error');
             $isshare = 1;
             $running = false;
-            $msg = '请先关注公共号。';
+            $msg = 'Please Fllow us First';
         } else {
             $fansID = $_W['fans']['id'];
             $from_user = $_W['fans']['from_user'];
@@ -66,7 +66,7 @@ class BigwheelModuleSite extends WeModuleSite {
                 );
                 $temp = pdo_insert($this->tablefans, $insert);
                 if ($temp == false) {
-                    message('抱歉，刚才操作数据失败！', '', 'error');
+                    message('DB error,Please Try again.！', '', 'error');
                 }
                 //增加人数，和浏览次数
                 pdo_update($this->tablename, array('fansnum' => $reply['fansnum'] + 1, 'viewnum' => $reply['viewnum'] + 1), array('id' => $reply['id']));
@@ -83,7 +83,7 @@ class BigwheelModuleSite extends WeModuleSite {
             //判断是否可以刮刮
             if ($awardone && empty($fans['tel'])) {
                 $running = false;
-                $msg = '请先填写用户资料';
+                $msg = 'Please Fill up the inforamation.';
             }
 
             //判断用户抽奖次数
@@ -94,12 +94,12 @@ class BigwheelModuleSite extends WeModuleSite {
             //判断总次数超过限制,一般情况不会到这里的，考虑特殊情况,回复提示文字msg，便于测试
             if ($running && $reply['starttime'] > time()) {
                 $running = false;
-                $msg = '活动还没有开始呢！';
+                $msg = 'Activity has not started yet!';
             }
             //判断总次数超过限制,一般情况不会到这里的，考虑特殊情况,回复提示文字msg，便于测试
             if ($running && $reply['endtime'] < time()) {
                 $running = false;
-                $msg = '活动已经结束了，下次再来吧！';
+                $msg = 'Activity has ended ';
             }
             //判断总次数超过限制,一般情况不会到这里的，考虑特殊情况,回复提示文字msg，便于测试
             if ($running && $fans['totalnum'] >= $reply['number_times'] && $reply['number_times'] > 0) {
@@ -109,7 +109,7 @@ class BigwheelModuleSite extends WeModuleSite {
             //判断当日是否超过限制,一般情况不会到这里的，考虑特殊情况,回复提示文字msg，便于测试
             if ($running && $fans['todaynum'] >= $reply['most_num_times'] && $reply['most_num_times'] > 0) {
                 $running = false;
-                $msg = '您已经超过今天的抽奖次数，明天再来吧!';
+                $msg = 'You have played today,Plese come back tomorrow';
             }
         }
 
@@ -119,7 +119,7 @@ class BigwheelModuleSite extends WeModuleSite {
                 break;
             $awardstr.='<p>' . $reply['c_type_' . $c] . '：' . $reply['c_name_' . $c];
             if ($reply['show_num'] == 1) {
-                $awardstr.='  奖品数量： ' . intval($reply['c_num_' . $c] - $reply['c_draw_' . $c]);
+                $awardstr.='  Awards amount： ' . intval($reply['c_num_' . $c] - $reply['c_draw_' . $c]);
             }
             $awardstr.='</p>';
         }
@@ -129,7 +129,7 @@ class BigwheelModuleSite extends WeModuleSite {
             $Tcount = $reply['most_num_times'];
             $Lcount = $reply['most_num_times'] - $fans['todaynum'];
         } elseif ($reply['most_num_times'] > 0) {
-            $detail = '本次活动每天可以转 ' . $reply['most_num_times'] . ' 次卡!你共已经转了 <span id="totalcount">' . intval($fans['totalnum']) . '</span> 次 ，今天转了<span id="count">' . intval($fans['todaynum']) . '</span> 次.';
+            $detail = 'The game can be played  ' . $reply['most_num_times'] . ' times everday!You have played <span id="totalcount">' . intval($fans['totalnum']) . '</span> times，You have played <span id="count">' . intval($fans['todaynum']) . '</span> times today.';
             $Tcount = $reply['most_num_times'];
             $Lcount = $reply['most_num_times'] - $fans['todaynum'];
         } elseif ($reply['number_times'] > 0) {
@@ -173,26 +173,26 @@ class BigwheelModuleSite extends WeModuleSite {
         $id = intval($_GPC['id']);
         //开始抽奖咯
         $reply = pdo_fetch("SELECT * FROM " . tablename($this->tablename) . " WHERE rid = :rid ORDER BY `id` DESC", array(':rid' => $id));
-        if ($reply == false) {
+        if ($reply == false) { 
              $this->message();
         }
 
         if($reply['isshow'] != 1){
            //活动已经暂停,请稍后...
-             $this->message(array("success"=>2, "msg"=>'活动暂停，请稍后...'),"");
+             $this->message(array("success"=>2, "msg"=>'Activity has suspended, Please wait...'),"");
         }
 
         if ($reply['starttime'] > time()) {
-            $this->message(array("success"=>2, "msg"=>'活动还没有开始呢，请等待...'),"");
+            $this->message(array("success"=>2, "msg"=>'Activity has not started yet ，Please wait...'),"");
         }
 
         $endtime = $reply['endtime'] + 68399;
         if ($endtime < time()) {
-            $this->message(array("success"=>2, "msg"=>'活动已经结束了，下次再来吧！'),"");
+            $this->message(array("success"=>2, "msg"=>'Activity has ended '),"");
         }
 
         if (empty($_W['fans'])) {
-            $this->message(array("success"=>2, "msg"=>'请先关注公共账号再来参与活动！详情请查看参与方法。'),"");
+            $this->message(array("success"=>2, "msg"=>'Please follow our club first.'),"");
         }
 
         //先判断有没有资格领取
@@ -303,6 +303,18 @@ class BigwheelModuleSite extends WeModuleSite {
         
         if(!empty($prizetype) && $fans['awardnum']<$reply['award_times']){
             //中奖
+            //这里加入积分。
+            if (preg_match('|(\d+)|',$awardname,$r)) {
+                $points = $r[1];
+            }
+            $pars = array(':from_user' => $_W['fans']['from_user'], ':weid' => $_W['weid']);
+            $member = pdo_fetch("SELECT * FROM " . tablename('card_members') . " WHERE from_user = :from_user AND weid = :weid", $pars);
+            if(empty($member)) {
+                 $this->message(array("success"=>2, "msg"=>'Please regist to be our member first.'),"");
+            }
+            
+            pdo_update('card_members', array('credit1' => $member['credit1'] + $points), array('id' => $member['id']));
+            //end
             
             $sn = random(16);
              pdo_update('bigwheel_reply', array('c_draw_' . $prizetype => $reply['c_draw_' . $prizetype] + 1), array('id' => $reply['id']));

@@ -119,9 +119,7 @@ CREATE TABLE IF NOT EXISTS `ims_bigwheel_reply` (
   PRIMARY KEY (`id`),KEY `indx_rid` (`rid`),KEY `indx_weid` (`weid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;]]></install>
 	<uninstall><![CDATA[
-drop table if exists ims_bigwheel_award;
-drop table if exists ims_bigwheel_fans;
-drop table if exists ims_bigwheel_reply;
+
 ]]></uninstall>
 	<upgrade><![CDATA[upgrade.php]]></upgrade>
 </manifest>

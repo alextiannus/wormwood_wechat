@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="./source/modules/bigwheel/template/style/style.css" media="all" />
 	<script type="text/javascript" src="./source/modules/bigwheel/template/style/zepto.js"></script>
 	<script type="text/javascript" src="./source/modules/bigwheel/template/style/alert.js"></script>	
-    <title>大转盘</title>
+    <title>Lucky Draw</title>
 </head>
 <body class="activity-lottery-winning">
     <div class="main">
@@ -27,21 +27,21 @@
         <div class="content">
             <div class="boxcontent boxyellow" id="result" {if !(!empty($awardone)&&empty($fans['tel']))}style="display:none"{/if}>
                 <div class="box">
-                    <div class="title-orange"><span>恭喜你中奖了</span></div>
+                    <div class="title-orange"><span>Congratulations</span></div>
                     <div class="Detail">
-                        <p>你中了：<span class="red" id="prizetype">{if empty($awardone['name'])}感谢参与{else}{$awardone['name']} -  {$awardone['description']}{/if}</span></p>
+                        <p>You earn ：<span class="red" id="prizetype">{if empty($awardone['name'])}Thanks For Playing{else}{$awardone['name']} -  {$awardone['description']}{/if}</span></p>
                         <p style="display:none">兑奖{$reply['sn_rename']}：<span class="red" id="sncode">{$awardone['award_sn']}</span></p>
 						<!--<p class="red" id="P1">你已经兑奖成功,本SN码自动作废! </p>-->
-						<p class="red" id="red">本次兑奖码已经关联你的微信号，你可向公众号发送【{php $tempArr=explode(',',$reply['keyword']);echo $tempArr[0];}】进行查询!  </p>
-                        <p><input name="tel" class="px" id="tel" value="{$_W['fans']['mobile']}" type="text" placeholder="用户请输入您的{$reply['tel_rename']}"></p>
-                        <p><input class="pxbtn" name="提 交" id="save-btn" type="button" value="用户提交"></p>
+						<p class="red" id="red">The points have been added into your account,You can check your member card. </p>
+                        <p><input style="display:none" name="tel" class="px" id="tel" value="{$_W['fans']['mobile']}" type="text" placeholder="用户请输入您的{$reply['tel_rename']}" value="8888888"></p>
+                        <p><input class="pxbtn" name="提 交" id="save-btn" type="button" value="OK"></p>
                     </div>
                 </div>
             </div>
 			{if $isshare==1}
             <div class="boxcontent boxyellow">
 				<div class="box">
-					<div class="title-orange">参与方法:</div>
+					<div class="title-orange">How to draw:</div>
 					<div class="Detail">{php echo htmlspecialchars_decode($reply['share_txt'])}</div>
 					</div>
 				</div>
@@ -49,7 +49,7 @@
 			{/if}			
             <div class="boxcontent boxyellow">
                 <div class="box">
-                    <div class="title-green"><span>奖项设置：</span></div>
+                    <div class="title-green"><span>Awards List：</span></div>
                     <div class="Detail">
                         {$awardstr}                                                                                                                                        </div>
 					</div>
@@ -57,10 +57,10 @@
             </div>
             <div class="boxcontent boxyellow">
                 <div class="box">
-                    <div class="title-green">活动说明：</div>
+                    <div class="title-green">Game Notes：</div>
                     <div class="Detail">
 						<p class="red" >{$detail}</p>
-						<p class="green" >活动时间: <br>{php echo date('Y-m-d H:i',$reply['starttime']);} 至 {php echo date('Y-m-d H:i',($reply['endtime']+86399));}</p>
+						<p class="green" >Game Time: <br>{php echo date('Y-m-d H:i',$reply['starttime']);} To {php echo date('Y-m-d H:i',($reply['endtime']+86399));}</p>
 						<p>{$reply['description']}</p>
                     </div>
                 </div>
@@ -68,14 +68,15 @@
 			{if !empty($award)}
 			<div class="boxcontent boxwhite">
 				<div class="box">
-					<div class="title-red"><span>恭喜你中奖了</span></div>
+					<div class="title-red"><span>Congratulations</span></div>
 					<div class="Detail">
 						{loop $award $row}
-						<p>你中了：<span class="red" id="name">{if empty($row['name'])}感谢参与{else}{$row['name']}  -  {$row['description']} {/if}</span></p>
-						<p>兑奖{$reply['sn_rename']}：<span class="red" id="sncode" >{$row['award_sn']}</span></p>
+						<p>You earn：<span class="red" id="name">{if empty($row['name'])}Thanks For Playing{else}{$row['name']}  -  {$row['description']} {/if}</span></p>
+						<p>The Unique {$reply['sn_rename']}：<span class="red" id="sncode" >{$row['award_sn']}</span></p>
 						{/loop}
-						<p class="red">本次兑奖码已经关联你的微信号，你可以发送【{$tempArr[0]}】进行查询.<br/>
-						{$reply['ticket_information']}</p>
+						<!-- <p class="red">本次兑奖码已经关联你的微信号，你可以发送【{$tempArr[0]}】进行查询.<br/> -->
+						<p class="red">You can check with us with Your Unique SN Number.<br/>
+						<!-- {$reply['ticket_information']} --></p>
 					</div>
 				</div>
 			</div>	
@@ -129,15 +130,15 @@
                     200)
                 }
             }
-function run(){
-     running = true;
-                        timer = setInterval(function () {
-                            i += 5;
-                            outter.style.webkitTransform = 'rotate(' + i + 'deg)';
-                            outter.style.MozTransform = 'rotate(' + i + 'deg)'
-                        },
-                        1)
-}
+			function run(){
+			     running = true;
+                 timer = setInterval(function () {
+                     i += 5;
+                     outter.style.webkitTransform = 'rotate(' + i + 'deg)';
+                     outter.style.MozTransform = 'rotate(' + i + 'deg)'
+                 },
+                 1)
+			}
             function start(deg) {
                 deg = deg || lostDeg[parseInt(lostDeg.length * Math.random())];
                 running = true;
@@ -148,12 +149,14 @@ function run(){
                 countSteps();
                 requestAnimFrame(step)
             }
+            
             window.start = start;
             outter = document.getElementById('outer');
             inner = document.getElementById('inner');
             i = 10;
+            
             $("#inner").click(function () {
-	  if (running) return;
+	  			if (running) return;
                 /*if (prize != null) {
                     alert("亲，你不能再参加本次活动了喔！下次再来吧~");
                     return
@@ -180,11 +183,11 @@ function run(){
                                 start(prizeDeg[data.prizetype - 1]);
                                 
                                 if($("#count").length>0){
-							$("#count").text(parseInt($("#count").text())+1);
-						}
-						if($("#totalcount").length>0){
-							$("#totalcount").text(parseInt($("#totalcount").text())+1)
-						}
+									$("#count").text(parseInt($("#count").text())+1);
+								}
+								if($("#totalcount").length>0){
+									$("#totalcount").text(parseInt($("#totalcount").text())+1)
+								}
                                                 
                             }
                             else{
@@ -197,10 +200,11 @@ function run(){
                             
                             if($("#count").length>0){
 							$("#count").text(parseInt($("#count").text())+1);
-						}
-						if($("#totalcount").length>0){
+							}
+                            
+							if($("#totalcount").length>0){
 							$("#totalcount").text(parseInt($("#totalcount").text())+1)
-						}
+							}
                                                 
                         }
                         running = false;
@@ -264,7 +268,7 @@ function run(){
                 _report('send_msg', res.err_msg);
             })
         });
-alert( window.shareData.tTitle);
+		alert( window.shareData.tTitle);
         // 分享到朋友圈
         WeixinJSBridge.on('menu:share:timeline', function (argv) {
             WeixinJSBridge.invoke('shareTimeline', {
