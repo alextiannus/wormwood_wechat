@@ -372,7 +372,7 @@ class BigwheelModuleSite extends WeModuleSite {
         if ($fans == false) {
             $data = array(
                 'success' => 0,
-                'msg' => '保存数据错误！',
+                'msg' => 'Submit Error！',
             );
         } else {
             $temp = pdo_update($this->tablefans, array('tel' => $_GPC['tel']), array('rid' => $id, 'fansID' => $fansID));
@@ -381,13 +381,13 @@ class BigwheelModuleSite extends WeModuleSite {
               
                 $data = array(
                     'success' => 0,
-                    'msg' => '保存数据错误！',
+                    'msg' => 'Submit Error！',
                 );
             } else {
                 $temp = pdo_update("fans", array('mobile' => $_GPC['tel']), array('id' => $fansID));
                 $data = array(
                     'success' => 1,
-                    'msg' => '成功提交数据',
+                    'msg' => 'Submit Sucessfully',
                 );
             }
         }

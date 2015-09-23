@@ -115,10 +115,10 @@ document.writeln("	display:block;	");
 document.writeln("}");
 document.writeln("<\/style>");
 document.writeln("<div class=\"window\" id=\"windowcenter\">");
-document.writeln("	<div id=\"title\" class=\"title\">消息提醒<span class=\"close\" id=\"alertclose\"><\/span><\/div>");
+document.writeln("	<div id=\"title\" class=\"title\">Message Alert<span class=\"close\" id=\"alertclose\"><\/span><\/div>");
 document.writeln("	<div class=\"content\">");
 document.writeln("	 <div id=\"txt\"><\/div>");
-document.writeln("	 <input type=\"button\" value=\"确定\" id=\"windowclosebutton\" name=\"确定\" class=\"txtbtn\">	");
+document.writeln("	 <input type=\"button\" value=\"OK\" id=\"windowclosebutton\" name=\"确定\" class=\"txtbtn\">	");
 document.writeln("	<\/div>");
 document.writeln("<\/div>");
 $(document).ready(function () { 
