@@ -262,6 +262,9 @@ class SingerlistModuleSite extends WeModuleSite {
 					
 					pdo_insert('singer_flower', $data); 
 					
+					//插入数据到歌手收入，club收入
+					$this->doSingerFeesMgmt($detail['name'],$amount,strtotime(date('Y-m-d')));
+					
 					echo json_encode(array ('info' => 'sucess....'));
 					
 				}
@@ -284,6 +287,8 @@ class SingerlistModuleSite extends WeModuleSite {
 				);
 				
 				pdo_insert('singer_flower', $data2); 
+				//插入数据到歌手收入，club收入
+				$this->doSingerFeesMgmt($detail['name'],$amount,strtotime(date('Y-m-d')));
 				
 				echo json_encode(array ('info' => 'sucess....'));
 				
@@ -336,6 +341,68 @@ class SingerlistModuleSite extends WeModuleSite {
 		}else{
 				return 'ok';
 		}
+	}
+	/**
+	 * 更新 歌手收入，club 收入
+	 * */
+	public function doSingerFeesMgmt($singer_name,$income,$submittime){
+	    global $_GPC, $_W;
+	    $data = array(
+	        'singer_name' => $singer_name,
+	        'income' => $income,
+	        'income_type' => '1',
+	        'submittime' => $submittime
+	    );
+	    
+	    $re = pdo_insert('club_income_log', $data); // 记录到income log table
+	    
+	    if ($re) {
+	    
+	        // 记录到歌手 总收入小费
+	        $singerIncome = pdo_fetch("SELECT * FROM " . tablename('club_singer_totalincome') . " WHERE incometime = :incometime and singer_name= :singer_name", array(
+	            ':incometime' => $submittime,':singer_name'=>$singer_name
+	        ));
+	        if (empty($singerIncome)) {
+	            $sgData = array(
+	                'singer_name' =>$singer_name,
+	                'total_income' => $income,
+	                'incometime' => $submittime
+	            );
+	            pdo_insert('club_singer_totalincome', $sgData);
+	        } else {
+	            $sgData = array(
+	                'total_income' => $singerIncome['total_income'] + $income,
+	                'updatetime' => time()
+	            );
+	            pdo_update('club_singer_totalincome', $sgData, array(
+	                'singer_name' =>$singer_name,'incometime' => $submittime
+	            ));
+	        }
+	        // 记录到歌手 总收入小费 end
+	    
+	        // 记录到club 总收入
+	        $club = pdo_fetch("SELECT * FROM " . tablename('club_total_income') . " WHERE createtime = :createtime", array(
+	            ':createtime' => $submittime
+	        ));
+	        if (empty($club)) {
+	            $clubData = array(
+	                'total_income' => $income,
+	                'createtime' => $submittime
+	            );
+	            $re = pdo_insert('club_total_income', $clubData);
+	        } else {
+	            $clubData = array(
+	                'total_income' => $club['total_income'] + $income,
+	                'updatetime' => time()
+	            );
+	            pdo_update('club_total_income', $clubData, array(
+	                'createtime' => $submittime
+	            ));
+	        }
+	    
+	        // 记录到club 总收入 end
+	    }
+	    
 	}
 
 }

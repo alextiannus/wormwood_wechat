@@ -1,0 +1,56 @@
+{template 'common/header'}
+
+<style>
+.table td span{display:inline-block;margin-top:4px;}
+.table td input{margin-bottom:0;}
+</style>
+
+
+<div class="main">
+	<form class="form-horizontal form" action="" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$item[id]}">
+		<h4>New Income Management</h4>
+		<table class="tb">
+			<tr>
+				<th><label for="">Select Singer</label></th>
+				<td>
+					<select name="singer_name" class="span6">
+						{loop $singerList $v}
+						<option value="{$v['name']}">{$v['name']}</option>
+						{/loop}
+					</select>
+				</td>
+			</tr>
+			
+			<tr>
+				<th><label for="">Income Amount</label></th>
+				<td>
+					<input type="text" class="span4" placeholder="must be digital" name="income" value="{$item['income']}">
+				</td>
+			</tr>
+			<tr>
+				<th><label for="">Income Time</label></th>
+				<td>
+					{php echo tpl_form_field_date('submittime', $item['submittime'], false)}
+			
+				</td>
+			</tr>
+			
+			
+			
+		</table>
+
+		<table class="tb">
+			<tr>
+				<th></th>
+				<td>
+					<button type="submit" class="btn btn-primary span3" name="submit" value="提交">Submit</button>
+				
+					<input type="hidden" name="token" value="{$_W['token']}" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+
+{template 'common/footer'}
