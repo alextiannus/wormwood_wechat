@@ -21,10 +21,11 @@ class IdishModule extends WeModule
         'order' => '订单管理',
         'category' => '类别管理',
         'goods' => '菜品管理',
-        'intelligent' => '智能选菜',
-        'smssetting' => '短信设置',
-        'emailsetting' => '邮件设置',
-        'printsetting' => '打印机设置'
+        'details' => '销售明细',
+       // 'intelligent' => '智能选菜',
+       // 'smssetting' => '短信设置',
+       // 'emailsetting' => '邮件设置',
+       // 'printsetting' => '打印机设置'
     );
 
     public function fieldsFormDisplay($rid = 0)
@@ -636,6 +637,8 @@ class IdishModule extends WeModule
                     'marketprice' => trim($_GPC['marketprice']),
                     'productprice' => trim($_GPC['productprice']),
                     'subcount' => intval($_GPC['subcount']),
+                    'totalstore' => intval($_GPC['totalstore']),
+                    'sales' => intval($_GPC['sales']),
                     'createtime' => TIMESTAMP,
                 );
 
@@ -648,7 +651,13 @@ class IdishModule extends WeModule
                 if (empty($data['storeid'])) {
                     message('非法参数');
                 }
-
+                if (!is_numeric($_GPC['totalstore'])) {
+                    message('库存必须是数字');
+                }
+                  if (!is_numeric($_GPC['sales'])) {
+                    message('已出售量必须是数字');
+                }
+                
                 if (!empty($_FILES['thumb']['tmp_name'])) {
                     file_delete($_GPC['thumb_old']);
                     $upload = file_upload($_FILES['thumb']);
@@ -890,8 +899,33 @@ class IdishModule extends WeModule
         }
         include $this->template('order');
     }
-
-
+    
+    /*
+     ** 销售详情
+     */
+    public function doDetails()
+    {  
+        global $_W, $_GPC;;
+        checklogin();
+        $action = 'details';
+        $title = $this->actions_titles[$action];
+        $storeid = intval($_GPC['storeid']);
+        if (empty($storeid)) {
+            message('请先选择门店!');
+        }
+        
+        $pindex = max(1, intval($_GPC['page']));
+        $psize = 10;
+        $condition = '';
+        $list = pdo_fetchall("SELECT a.id,a.price,a.total,a.dateline,b.title FROM " . tablename($this->modulename . '_order_goods') . " a left join"  . tablename($this->modulename . '_goods') . " b on a.goodsid = b.id WHERE a.weid = '{$_W['weid']}' AND a.storeid={$storeid} $condition ORDER BY a.id desc, a.dateline DESC LIMIT " . ($pindex - 1) * $psize . ',' . $psize);
+        
+        $total = pdo_fetchcolumn('SELECT COUNT(*) FROM ' . tablename($this->modulename . '_order_goods') . " WHERE weid = '{$_W['weid']}' $condition");
+        
+        $pager = pagination($total, $pindex, $psize);
+        include $this->template('details');
+    }
+    
+    
 
     /*
     ** 设置切换导航

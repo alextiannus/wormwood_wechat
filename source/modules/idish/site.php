@@ -19,6 +19,7 @@ class IdishModuleSite extends WeModuleSite
     public $entrance_type_menu = 4;
     public $msg_status_success = 1;
     public $msg_status_bad = 0;
+    public $msg_status_full = 3;
 
     //网站入口,直接进入list page
     public function doMobileEntrance()
@@ -577,6 +578,19 @@ class IdishModuleSite extends WeModuleSite
                 $this->showMessageAjax('请输入联系地址!', $this->msg_status_bad);
             }
         }
+        
+        //判断库存
+        foreach ($cart as $value) {
+            $totalAmount = $value['total'];
+            $goodsid =  $value['goodsid'];
+            $goodItem = pdo_fetch("SELECT * FROM " . tablename($this->modulename . '_goods') . "WHERE id={$goodsid}");
+            if($goodItem['totalstore'] != -1){ 
+                if($goodItem['totalstore']-$totalAmount<0){
+                    $this->showMessageAjax('Sorry,' . $goodItem['title'] . ' is out of store.Please choose other food', $this->msg_status_bad);
+                }
+
+            }
+        }
 
         $sdate = $sdate . trim($_GPC['time_hour']) . trim($_GPC['time_second']);
         //2.购物车 //a.添加订单、订单产品
@@ -686,7 +700,7 @@ class IdishModuleSite extends WeModuleSite
                 $this->showMessageAjax('该订单已经确认过了，无需重复提交!', $this->msg_status_bad);
             }
         }
-        pdo_query("UPDATE " . tablename($this->modulename . '_order') . " SET status=1 WHERE id=:id", array(':id' => $orderid));
+       // pdo_query("UPDATE " . tablename($this->modulename . '_order') . " SET status=1 WHERE id=:id", array(':id' => $orderid));
         
         
         
@@ -777,12 +791,12 @@ class IdishModuleSite extends WeModuleSite
             $result = $this->sendmail($mail_config);
             //$result = ihttp_email($emailSetting['email'], '订单提醒', $emailSetting['email_business_tpl']);
         }
-        $this->chargeMember($order['totalprice'],$orderid);
+        $this->chargeMember($order['totalprice'],$orderid,$storeid,$weid);
         //$this->showMessageAjax('订单确认成功，请等待处理!', $this->msg_status_success);
     }
     
     // 会员扣费
-    public function chargeMember($amount,$orderid){
+    public function chargeMember($amount,$orderid,$storeid,$weid){
     	global $_GPC, $_W;
     	$jifen = intval($_W['fans']['credit1']);
 		$yuer = intval($_W['fans']['credit2']);
@@ -797,12 +811,13 @@ class IdishModuleSite extends WeModuleSite
 				$result = $jifen-($amount-$yuer)*10;   //积分按 1：10 换算
 				
 				if($result<0){
-					
+				    $this-> updateAmount($orderid,$storeid,$weid);  //更新数量
 					pdo_query("UPDATE " . tablename($this->modulename . '_order') . " SET status=2 WHERE id=:id", array(':id' => $orderid));
 					$this->showMessageAjax('Your Order Confirm Sucessfully, Cos Your Lack of Balance / Not A Member, Our Waiter Will Send The Meal ASAP And Charge You '.$amount.' SGD', $this->msg_status_success);
 				}else{
 					//先扣余额，再扣积分
-					
+				    $this-> updateAmount($orderid,$storeid,$weid);  //更新数量
+				    pdo_query("UPDATE " . tablename($this->modulename . '_order') . " SET status=1 WHERE id=:id", array(':id' => $orderid));
 					$data = array (
 						'credit2' => 0,
 						'credit1' => $result
@@ -815,6 +830,10 @@ class IdishModuleSite extends WeModuleSite
 					
 				}
 			}else{
+			    $this-> updateAmount($orderid,$storeid,$weid);  //更新数量
+			    
+			    pdo_query("UPDATE " . tablename($this->modulename . '_order') . " SET status=1 WHERE id=:id", array(':id' => $orderid));
+			    
 				$data = array (
 				'credit2' => $yuer-$amount
 				);
@@ -824,6 +843,40 @@ class IdishModuleSite extends WeModuleSite
 			}
 			
 		
+    }
+    
+    //更新商品数量
+    public function updateAmount($orderid,$storeid,$weid){
+        global $_W, $_GPC;
+        $goods = pdo_fetchall("SELECT * FROM " . tablename($this->modulename . '_order_goods') . "WHERE weid = {$weid} and orderid={$orderid} and storeid={$storeid}");
+        foreach ($goods as $key => $value) {
+            $goodId = $value['goodsid'];
+            $total = $value['total'];
+            $goodItem = pdo_fetch("SELECT * FROM " . tablename($this->modulename . '_goods') . "WHERE id={$goodId}");
+            if ($goodItem['totalstore'] != - 1) {
+                
+                if ($goodItem['totalstore'] - $total < 0) {
+                    $this->showMessageAjax('Sorry,' . $goodItem['title'] . 'is out of store.Please choose other food ', $this->msg_status_full);
+                    exit();
+                } else {
+                    $updateData = array(
+                        'totalstore' => $goodItem['totalstore'] - $total,
+                        'sales' => $goodItem['sales'] + $total
+                    );
+                    $reu = pdo_update('idish_goods', $updateData, array(
+                        'id' => $goodItem['id']
+                    ));
+                }
+            } else {
+                // 更新销售，-1 表示总额不限制
+                $updateData = array(
+                    'sales' => $goodItem['sales'] + $total
+                );
+                $reu = pdo_update('idish_goods', $updateData, array(
+                    'id' => $goodItem['id']
+                ));
+            }
+        }
     }
 
     //我的订单

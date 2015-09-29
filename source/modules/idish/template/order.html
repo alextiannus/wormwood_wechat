@@ -148,14 +148,14 @@
 		<input type="hidden" name="id" value="{$item[id]}">
 		<h4>订单信息</h4>
 		<table class="tb">
-            <tr>
+        <!--     <tr>
                 <th><label for="">订单类型</label></th>
                 <td>
                     {if $item['dining_mode']==1}<span class="label" style="background:#4169e1;">到店</span>{/if}
                     {if $item['dining_mode']==2}<span class="label" style="background:#e63a3a;">外卖</span> 地址:{$item['address']}{/if}
                     {if $item['dining_mode']==3}<span class="label" style="background:#4169e1;">预订</span>{/if}
                 </td>
-            </tr>
+            </tr> -->
 			<tr>
 				<th><label for="">订单号</label></th>
 				<td>
@@ -181,13 +181,13 @@
                     {$item['tables']}
                 </td>
             </tr>
-            <tr>
+         <!--    <tr>
                 <th><label for="">位置类型</label></th>
                 <td>
                     {if $item['seat_type']==1}包厢{/if}
                     {if $item['seat_type']==2}大厅{/if}
                 </td>
-            </tr>
+            </tr> -->
             {/if}
             {if $item['dining_mode']==3}
             <tr>
@@ -286,7 +286,9 @@
                 </td>
 				<td>{$goodsid[$row['id']]['total']}</td>
 				<td style="text-align:right;">
+				{if $item['status'] != 3}
 					<a href="{php echo $this->createWebUrl('goods', array('id' => $row['id'], 'op' => 'post'))}">编辑</a>&nbsp;&nbsp;<a href="{php echo $this->createWebUrl('goods', array('id' => $row['id'], 'op' => 'delete'))}" onclick="return confirm('此操作不可恢复，确认删除？');return false;">删除</a>
+				{/if}
 				</td>
 			</tr>
 			{/loop}
@@ -296,22 +298,22 @@
 				<th></th>
 				<td>
 				
-					{if $item['status']==0}
+				<!-- 	{if $item['status']==0}
 					<button type="submit" class="btn btn-primary span2" onclick="return confirm('确认付款此订单吗？'); return false;" name="confrimpay" onclick="" value="完成">确认付款</button>
-					{/if}
-					{if $item['status'] == 1}
+					{/if} -->
+					{if $item['status'] == 1 || $item['status'] == 2}
 					<button type="submit" class="btn btn-primary span2" onclick="return confirm('确认完成此订单吗？'); return false;" name="finish" onclick="" value="完成">完成订单</button>
 					{/if}
-					{if $item['status'] == 2}
+					<!-- {if $item['status'] == 2}
 					<button type="submit" class="btn btn-primary span2" name="confirm" value="正常" onclick="return confirm('确认取消完成此订单吗？'); return false;">确认订单</button>
 					<button type="submit" class="btn btn-primary span2" name="cancel" value="正常" onclick="return confirm('确认取消完成此订单吗？'); return false;">取消完成</button>
 					<button type="submit" class="btn btn-primary span2" name="cancelpay" value="正常" onclick="return confirm('确认取消付款此订单吗？'); return false;">取消付款</button>
-					{/if}
-					{if $item['status'] != -1}
+					{/if} -->
+					<!-- {if $item['status'] != -1}
 					<button type="submit" class="btn span2" name="close" onclick="return confirm('确认关闭此订单吗？'); return false;" value="关闭">关闭订单</button>
 					{else}
 					<button type="submit" class="btn span2 btn-primary" name="cancelpay" onclick="return confirm('确认开启此订单吗？'); return false;" value="关闭">开启订单</button>
-					{/if}
+					{/if} -->
 					<input type="hidden" name="token" value="{$_W['token']}" />
 				</td>
 			</tr>

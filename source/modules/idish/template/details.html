@@ -1,0 +1,120 @@
+{template 'common/header'}
+<style>
+            .page-nav {
+                margin:0;
+                width:100%;
+                min-width:800px;
+            }
+
+            .page-nav-tabs {
+                background:#EEE;
+            }
+
+            .page-nav > li > a {
+                display: block;
+            }
+
+            .page-nav-tabs > li > a{
+                padding-right: 12px;
+                padding-left: 12px;
+                margin-right: 2px;
+                line-height: 14px;
+            }
+            .page-nav-tabs > li > a {
+                padding-top: 8px;
+                padding-bottom: 8px;
+                line-height: 20px;
+                border: 1px solid transparent;
+                -webkit-border-radius: 4px 4px 0 0;
+                -moz-border-radius: 4px 4px 0 0;
+                border-radius: 4px 4px 0 0;
+            }
+            .page-nav-tabs > li > a {
+                padding: 0;
+                margin: 0;
+                height: 40px;
+                line-height: 40px;
+                padding: 0 10px;
+                font-size: 14px;
+                color: #666;
+                -webkit-border-radius: 0;
+                -moz-border-radius: 0;
+                border-radius: 0;
+            }
+
+            .page-nav-tabs>li {
+                line-height: 40px;
+                float: left;
+                list-style: none;
+                display: block;
+                text-align: -webkit-match-parent;
+            }
+
+            .page-nav-tabs>li>a,.page-nav-tabs>li>a:focus {
+                border-radius: 0 !important;
+                background-color: #f9f9f9;
+                color: #999;
+                margin-right: -1px;
+                position: relative;
+                z-index: 11;
+                border-color: #c5d0dc;
+                text-decoration: none;
+            }
+
+            .page-nav-tabs>li>a:hover
+            {
+                background-color: #FFF;
+            }
+
+            .page-nav-tabs>li.active>a, .page-nav-tabs>li.active>a:hover, .page-nav-tabs>li.active>a:focus {
+                color: #576373;
+                border-color: #c5d0dc;
+                border-top: 2px solid #4c8fbd;
+                border-bottom-color: transparent;
+                background-color: #FFF;
+                z-index: 12;
+                margin-top: -1px;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,0.15);
+            }
+ </style>
+
+{php echo $this -> set_tabbar($action, $storeid);}
+
+<div class="main">
+
+    <input type="hidden" name="storeid" value="{$storeid}" />
+    <div style="padding: 15px;">
+    <h4>销售详情   &nbsp;<a class="btn" href="javascript:location.reload()"><i class="icon-refresh"></i>刷新</a></h4>
+   
+    </div>
+    <form action="" method="post" class="form-horizontal form" onsubmit="return formcheck(this)">
+	<div> 
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="width:30px;">ID</th>
+					<th>名称</th>
+					<th style="width:50px;">单价</th>
+					<th style="width:80px;">销售数量</th>
+					<th style="width:150px;">销售时间</th>
+				
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $item}
+				<tr>
+					<td>{$item['id']}</td>
+					<td>{$item['title']}</td>
+                    <td>{$item['price']}</td>
+                    <td>{$item['total']}</td>
+					<td>{php echo date('Y-m-d H:i:s', $item['dateline'])}</td>
+				</tr>
+				{/loop}
+		
+		</table>
+		{$pager}
+	</div>
+    </form>
+</div>
+
+{template 'common/footer'}
