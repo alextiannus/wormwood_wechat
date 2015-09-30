@@ -9,27 +9,27 @@ body{background:#F9F9F9;}
 </style>
 {template 'member'}
 <div class="card img-rounded">
-	<div class="cardsn">卡号：{$member['cardsn']}</div>
+	<div class="cardsn">Card No.：{$member['cardsn']}</div>
 	<div class="cardtitle">{$card['title']}</div>
 	<div class="cardlogo"><img src="{$_W['attachurl']}{$card['logo']}"></div>
 	<img src="{if $card['background']['background'] == 'system'}{$_W['siteroot']}source/modules/member/images/card/{$card['background']['image']}.png{else}{$_W['attachurl']}{$card['background']['image']}{/if}">
 </div>
 <div class="mobile-div img-rounded">
-	<div class="mobile-li"><span class="pull-right muted">{$member['cardsn']}</span>卡号</div>
-	<div class="mobile-li"><span class="pull-right muted">{php echo date('Y-m-d', $member['createtime'])}</span>领卡日期</div>
-	<div class="mobile-li"><span class="pull-right muted">{$_W['fans']['credit1']}</span>积分</div>
-	<div class="mobile-li"><span class="pull-right muted">{$_W['fans']['credit2']} 元</span>余额</div>
+	<div class="mobile-li"><span class="pull-right muted">{$member['cardsn']}</span>Card No.</div>
+	<div class="mobile-li"><span class="pull-right muted">{php echo date('Y-m-d', $member['createtime'])}</span>Registration Time</div>
+	<div class="mobile-li"><span class="pull-right muted">{$_W['fans']['credit1']}</span>Point</div>
+	<div class="mobile-li"><span class="pull-right muted">{$_W['fans']['credit2']} SGD</span>Balance</div>
 </div>
 
 <!--导航条，navbar-fixed-top居上，navbar-fixed-bottom居下-->
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<ul class="nav">
-			<li><a href="#" onclick="history.go(-1);return false;"><i class="icon-chevron-left"></i> 返回</a></li>
+			<li><a href="#" onclick="history.go(-1);return false;"><i class="icon-chevron-left"></i> Return</a></li>
 		</ul>
-		<ul class="nav pull-right">
+		<!-- <ul class="nav pull-right">
 			<li><a href="{php echo create_url('mobile/channel', array('name' => 'home', 'weid' => $_W['weid']))}"><i class="icon-user"></i> 个人中心</a></li>
-		</ul>
+		</ul> -->
 	</div>
 </div>
 {template 'footer'}
