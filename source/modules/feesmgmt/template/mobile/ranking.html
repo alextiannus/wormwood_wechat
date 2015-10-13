@@ -1,0 +1,55 @@
+<!doctype html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="format-detection" content="telephone=no">
+<title>Ranking</title>
+<link rel="stylesheet" href="./source/modules/feesmgmt/template/css/jquery.mobile-1.4.2.min.css">
+<link rel="stylesheet" href="./source/modules/feesmgmt/template/css/mobile.css">
+
+<script src="./source/modules/feesmgmt/template/js/jquery-2.0.3.min.js"></script>
+<script src="./source/modules/feesmgmt/template/js/jquery.mobile-1.4.2.min.js"></script>
+
+<div data-role="page" >
+<script type="text/javascript">
+
+	</script>
+	  <div data-role="content">
+		  <div role="main" class="ui-content" >
+		  <div class="TheArmory">
+		  
+		    {if empty($singer)}
+		    <div class="alert">
+		    
+		    Your Are Not Our Registed Singer Yet！Please Submit Your Member Card No. And Contact Club to Regist.
+		   
+		    </div>
+		    {/if}
+		    	{loop $list $index $item}
+			<a href="#" data-ajax="false">
+				<div class="TheArmoryList" >
+				
+			    	<dl class="Thefirst Theranking">
+		    	
+		    	
+		    	
+			        	<dt>{php echo $index+1}</dt>
+			            <dd>
+			            {if $item['singer_name'] == $singer['name']}
+			            <span style="color:#000">Name:</span>{$item['singer_name']}
+			            {else}
+			            <span style="color:#000">Name:</span>xxxxx
+			            {/if}
+			            	
+			                <label style="color:#000">Today's Income:{$item['total_income']} SGD</label>
+			            </dd>
+			        </dl>
+			        
+			    </div>
+			   </a>
+				{/loop}
+	</div>	    
+		{$pager}
+		    
+		</div>	  </div>
+	</div> 

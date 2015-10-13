@@ -208,5 +208,36 @@ class FeesmgmtModuleSite extends WeModuleSite
         ));
         
     }
+    
+    
+    //mobile enrance, view fees ranking.
+    public function doMobileEntrance()
+    {
+        //排行榜功能
+         global $_GPC, $_W;
+         $weid = intval($_GET['weid']);
+         $from_user = authcode(base64_decode($_GPC['from_user']), 'DECODE');
+         if(empty($from_user)){
+             $from_user = $_W['fans']['from_user'];
+         }
+         
+         $card = pdo_fetch("SELECT * FROM ".tablename('card_members')." WHERE weid = :weid and from_user=:from_user ", array(':weid' => $weid, ':from_user' => $from_user));
+         $cardsn = $card['cardsn'];
+         if(empty($card)){
+             include $this->template('ranking');  // 没找到用户注册信息
+             exit();
+         }
+         
+         $singer =pdo_fetch("SELECT * FROM ".tablename('singer')." WHERE weid = :weid and cardsn=:cardsn ", array(':weid' => $weid, ':cardsn' => $cardsn));
+         if(empty($singer)){
+             include $this->template('ranking');  // 没找到对应歌手
+             exit();
+         }
+         $incometime2 = strtotime(date("Y-m-d")); // 获取今天收益排行
+         $list = pdo_fetchall("SELECT * FROM " . tablename('club_singer_totalincome') . " WHERE incometime = {$incometime2} order by total_income desc ");
+         include $this->template('ranking');
+    
+    
+    }
  
 }

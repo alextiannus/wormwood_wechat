@@ -15,6 +15,7 @@ class SingerlistModuleSite extends WeModuleSite {
 		$op = !empty ($_GPC['op']) ? $_GPC['op'] : 'display'; //操作
 		if ('post' == $op) { //添加/更新照片
 			$id = intval($_GPC['id']); //获得歌手id
+			$cardsnList = pdo_fetchall("SELECT * FROM " . tablename('card_members') . "");
 			if (!empty ($id)) { //更新歌手
 				//查找是否存在
 				$item = pdo_fetch("SELECT * FROM " . tablename('singer') . " WHERE id = :id", array (
@@ -37,6 +38,7 @@ class SingerlistModuleSite extends WeModuleSite {
 				}
 				$weid = $_W['weid'];
 				$singerName = $_GPC['singerName']; //姓名
+				$cardsn = $_GPC['cardsn']; //会员卡号
 				$address = $_GPC['address']; //地址
 				$age = $_GPC['age']; //年龄
 				$phone = $_GPC['phone']; //联系方式
@@ -48,6 +50,7 @@ class SingerlistModuleSite extends WeModuleSite {
 					'weid' => $weid,
 					'name' => $singerName,
 					'address' => $address,
+				    'cardsn' => $cardsn,
 					'age' => $age,
 					'phone' => $phone,
 					'tou' => $tou,

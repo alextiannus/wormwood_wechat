@@ -16,6 +16,7 @@
 					<th >编号</th>
 					<th >姓名</th>
 					<th >年龄</th>
+					<th >会员卡号</th>
 					<th >来自</th>
 					<th >手机</th>
 					<th >获赞次数</th>
@@ -28,6 +29,7 @@
 					<td>{$item['id']}</td>
 					<td>{$item['name']}</td>
 					<td>{$item['age']}</td>
+					<td>{$item['cardsn']}</td>
 					<td>{$item['address']}</td>
 					<td>{$item['phone']}</td>
 					<td>{$item['zan']}</td>
@@ -63,6 +65,18 @@
 				<td>
 					<input type="text" class="span4" placeholder="" name="singerName" value="{$item['name']}">
 					<span class="help-block">填写歌手名字</span>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="">歌手会员卡号</label></th>
+				<td>
+				<select name="cardsn" class="span6">
+					<option value=""></option>
+						{loop $cardsnList $v}
+						<option value="{$v['cardsn']}" {if $item['cardsn'] == $v['cardsn']} selected="selected"{/if}>{$v['cardsn']}</option>
+						{/loop}
+				</select>
+				<span class="help-block">歌手提供会员卡号，进行绑定后，歌手才能查看自己收益情况</span>
 				</td>
 			</tr>
 			
