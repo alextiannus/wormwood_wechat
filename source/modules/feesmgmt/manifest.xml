@@ -23,7 +23,7 @@
     </cover>
 		
 		<menu>
-			<entry title="Submit New Income" do="newIncome"/>
+			<entry title="Record Tip" do="newIncome"/>
 			<entry title="Income Ranking" do="ranking"/>
 			<entry title="Singer Total Income" do="singerDetail"/>
 			<entry title="Club Total Income" do="incomeDetail"/>

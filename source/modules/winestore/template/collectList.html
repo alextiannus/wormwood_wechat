@@ -119,7 +119,7 @@
 												{if $row['status'] != "Done"}
 												<a href="{php echo create_url('site/module', array('do' => 'updateCollect', 'name' => 'winestore','collectedby'=>$row['collectedby'],'cardnumber'=>$row['cardnumber'],'id'=>$row['id']))}"><button type="button" class="btn btn-success">Confirm Collected</button></a>
 												{/if}
-												<a onclick="return confirm('You Will Delete All The Data Of This Record?');return false;" href="{php echo create_url('site/module', array('do' => 'delete', 'name' => 'winestore','snid'=>$row['snid'],'id'=>$row['id']))}"><button type="button" class="btn btn-danger">Delete</button></a>
+											<!-- 	<a onclick="return confirm('You Will Delete All The Data Of This Record?');return false;" href="{php echo create_url('site/module', array('do' => 'delete', 'name' => 'winestore','snid'=>$row['snid'],'id'=>$row['id']))}"><button type="button" class="btn btn-danger">Delete</button></a> -->
 												
 											</td>
 										</tr>

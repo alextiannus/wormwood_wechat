@@ -21,8 +21,8 @@
         <entry title="WineStorage入口设置" do="entrance" />
     </cover>
 		<menu>
-			<entry title="Request Storage List" do="requestList"  />  
-			<entry title="Request Collect List" do="wineCollectList"  /> 
+			<entry title="Storage Request" do="requestList"  />  
+			<entry title="Collection Request" do="wineCollectList"  /> 
 			<entry title="Storage List" do="wineStorageList"  />   
 		</menu>
 		

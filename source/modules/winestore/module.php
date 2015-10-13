@@ -13,7 +13,7 @@ class WinestoreModule extends WeModule {
 	public function doRequestList(){
 		global $_W,$_GPC;
 		$weid = $_W["weid"];
-		$res = pdo_fetchall("select id,snid,name,FROM_UNIXTIME(creattime)creattime,(CASE  status when 0 then 'Pending' else 'Done'end)status from ims_wine_store where 1=1 and weid={$weid}");
+		$res = pdo_fetchall("select id,snid,name,FROM_UNIXTIME(creattime)creattime,(CASE  status when 0 then 'Pending' else 'Done'end)status from ims_wine_store where 1=1 and weid={$weid} order by creattime desc");
 		include $this->template("wineadmin");
 	}
 	
@@ -221,14 +221,14 @@ class WinestoreModule extends WeModule {
 	//进入request collect page
 	public function doWineCollectList(){
 	    global $_W,$_GPC;
-	    $res = pdo_fetchall("select id,cardnumber,winename,collectedby,tablenumber,FROM_UNIXTIME(creattime)creattime,(CASE  status when 0 then 'Pending' else 'Done'end)status from ims_wine_retrieve_list where 1=1 ");
+	    $res = pdo_fetchall("select id,cardnumber,winename,collectedby,tablenumber,FROM_UNIXTIME(creattime)creattime,(CASE  status when 0 then 'Pending' else 'Done'end)status from ims_wine_retrieve_list where 1=1 and status = 0 order by creattime desc");
 	    include $this->template("collectList");
 	}
 	//request collect page search 
 	public function doWineCollectSearch(){
 	    global $_W,$_GPC;
 	    $cardnumber=$_GPC['cardnumber'];
-	    $res = pdo_fetchall("select id,cardnumber,winename,collectedby,tablenumber,FROM_UNIXTIME(creattime)creattime,(CASE  status when 0 then 'Pending' else 'Done'end)status from ims_wine_retrieve_list where 1=1 and cardnumber like '{$cardnumber}%' ");
+	    $res = pdo_fetchall("select id,cardnumber,winename,collectedby,tablenumber,FROM_UNIXTIME(creattime)creattime,(CASE  status when 0 then 'Pending' else 'Done'end)status from ims_wine_retrieve_list where 1=1 and status = 0 and cardnumber like '{$cardnumber}%' order by creattime desc");
 	    include $this->template("collectList");
 	}
 	
