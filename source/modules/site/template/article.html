@@ -190,9 +190,11 @@
 			<tr>
 				<th>内容</th>
 				<td>
-					<textarea style="height:400px; width:100%;" class="span7 richtext-clone" name="content" cols="70" id="reply-add-text">{$item['content']}</textarea>
+				<!-- 	<textarea style="height:400px; width:100%;" class="span7 richtext-clone" name="content" cols="70" id="reply-add-text">{$item['content']}</textarea> -->
+					{template 'common/editor/index'} 
 				</td>
 			</tr>
+			
 			<tr>
 				<th><label for="">直接链接</label></th>
 				<td>
